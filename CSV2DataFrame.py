@@ -19,27 +19,71 @@
 # sudo pip install numpy pandas
 ########################################################################################################################
 import os
+import math
+import pandas as pandas
+import numpy as np
 from ros_csv_formats.CSVFormat import CSVFormat
-from TUMCSV2DataFrame import TUMCSV2DataFrame
-from PoseCovCSV2DataFrame import PoseCovCSV2DataFrame
 
 
 class CSV2DataFrame:
     format = CSVFormat.none
-    df = None
+    data_frame = None
+    data_loaded = False
 
-    def __init__(self, fn):
-        fmt = CSVFormat.identify_format(fn)
-        if fmt is not CSVFormat.none:
-            self.format = fmt
-            if fmt == CSVFormat.TUM:
-                self.df = TUMCSV2DataFrame.load_CSV(fn)
+    def __init__(self, filename, fmt=None):
+        if os.path.exists(filename):
+            if fmt is None:
+                fmt = CSVFormat.identify_format(filename)
+            if fmt is not CSVFormat.none:
+                self.format = fmt
+                self.data_frame = CSV2DataFrame.load_CSV(filename, fmt)
+                self.data_loaded = True
 
-            elif fmt == CSVFormat.PoseCov:
-                self.df = PoseCovCSV2DataFrame.load_CSV(fn)
-            else:
-                print('CSV2DataFrame: format {0} not supported!'.format(fmt))
-                self.format = CSVFormat.none
+    def subsample(self, step=None, num_max_points=None):
+        self.data_frame = CSV2DataFrame.subsample_DataFrame(self.data_frame, step=step,
+                                                            num_max_points=num_max_points)
+
+    @staticmethod
+    def load_CSV(filename, fmt):
+        data = pandas.read_csv(filename, sep='\s+|\,', comment='#', header=None, names=CSVFormat.get_format(fmt),
+                               engine='python')
+        return data
+
+    @staticmethod
+    def save_CSV(data_frame, filename, fmt, save_index=False):
+        head = os.path.dirname(os.path.abspath(filename))
+        if not os.path.exists(head):
+            os.makedirs(head)
+
+        data_frame.to_csv(filename, sep=',', index=save_index,
+                          header=CSVFormat.get_header(fmt),
+                          columns=CSVFormat.get_format(fmt))
+
+    @staticmethod
+    def subsample_DataFrame(df, step=None, num_max_points=None, verbose=False):
+
+        num_elems = len(df.index)
+
+        if num_max_points:
+            step = 1
+            if (int(num_max_points) > 0) and (int(num_max_points) < num_elems):
+                step = int(math.ceil(num_elems / float(num_max_points)))
+
+        sparse_indices = np.arange(start=0, stop=num_elems, step=step)
+
+        if (num_max_points or step):
+            if verbose:
+                print("CSV2DataFrame.subsample_DataFrame():")
+                print("* len: " + str(num_elems) + ", max_num_points: " + str(
+                    num_max_points) + ", subsample by: " + str(step))
+
+            df_sub = df.loc[sparse_indices]
+            df_sub.reset_index(inplace=True)
+
+            return df_sub
+
+        else:
+            return df
 
 
 ########################################################################################################################

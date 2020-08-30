@@ -23,14 +23,14 @@ from ros_csv_formats.CSVFormat import CSVFormat
 from CSV2DataFrame import CSV2DataFrame
 
 
-class PoseCovCSV2DataFrame(CSV2DataFrame):
+class PoseWithCov2DataFrame(CSV2DataFrame):
     def __init__(self, fn=None):
-        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormat.PoseCov)
+        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormat.PoseWithCov)
 
     def load_from_CSV(self, fn):
         if os.path.exists(fn):
-            self.data_frame = PoseCovCSV2DataFrame.load_CSV(fn=fn, fm=CSVFormat.PoseCov)
+            self.data_frame = CSV2DataFrame.load_CSV(filename=fn, fm=CSVFormat.PoseWithCov)
             self.data_loaded = True
 
     def save_to_CSV(self, fn):
-        PoseCovCSV2DataFrame.save_CSV(self.data_frame, fn=fn, format=CSVFormat.PoseCov)
+        CSV2DataFrame.save_CSV(self.data_frame, filename=fn, format=CSVFormat.PoseWithCov)

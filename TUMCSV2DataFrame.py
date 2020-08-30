@@ -22,42 +22,20 @@ import os
 import math
 import pandas as pandas
 from ros_csv_formats.CSVFormat import CSVFormat
+from CSV2DataFrame import CSV2DataFrame
 
 
-class TUMCSV2DataFrame:
-    data_frame = None
-    data_loaded = False
+class TUMCSV2DataFrame(CSV2DataFrame):
+    def __init__(self, fn=None):
+        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormat.TUM)
 
-    def __init__(self, filename=None):
-        if filename:
-            self.load_from_CSV(filename=filename)
-
-    def load_from_CSV(self, filename):
-        if os.path.exists(filename):
-            self.data_frame = TUMCSV2DataFrame.load_CSV(filename=filename)
+    def load_from_CSV(self, fn):
+        if os.path.exists(fn):
+            self.data_frame = CSV2DataFrame.load_CSV(filename=fn, fm=CSVFormat.TUM)
             self.data_loaded = True
 
-    def save_to_CSV(self, filename):
-        TUMCSV2DataFrame.save_CSV(self.data_frame, filename=filename)
-
-    def subsampe(self, step=None, num_max_points=None):
-        self.data_frame = TUMCSV2DataFrame.subsample_DataFrame(self.data_frame, step=step,
-                                                               num_max_points=num_max_points)
-
-    @staticmethod
-    def load_CSV(filename, sep='\s+|\,', comment='#', header=CSVFormat.get_format(CSVFormat.TUM)):
-        data = pandas.read_csv(filename, sep=sep, comment=comment, header=None, names=header, engine='python')
-        return data
-
-    @staticmethod
-    def save_CSV(data_frame, filename, save_index=False):
-        head = os.path.dirname(os.path.abspath(filename))
-        if not os.path.exists(head):
-            os.makedirs(head)
-
-        data_frame.to_csv(filename, sep=',', index=save_index,
-                          header=CSVFormat.get_header(CSVFormat.TUM),
-                          columns=CSVFormat.get_format(CSVFormat.TUM))
+    def save_to_CSV(self, fn):
+        CSV2DataFrame.save_CSV(self.data_frame, filename=fn, format=CSVFormat.TUM)
 
     @staticmethod
     def DataFrame_to_numpy_dict(df):
@@ -96,32 +74,6 @@ class TUMCSV2DataFrame:
             {'t': t_vec[:, 0], 'tx': p_vec[:, 0], 'ty': p_vec[:, 1], 'tz': p_vec[:, 2], 'qx': q_vec[:, 0],
              'qy': q_vec[:, 1], 'qz': q_vec[:, 2], 'qw': q_vec[:, 3]})
         return data_frame
-
-    @staticmethod
-    def subsample_DataFrame(df, step=None, num_max_points=None, verbose=False):
-
-        num_elems = len(df.index)
-
-        if num_max_points:
-            step = 1
-            if (int(num_max_points) > 0) and (int(num_max_points) < num_elems):
-                step = int(math.ceil(num_elems / float(num_max_points)))
-
-        sparse_indices = np.arange(start=0, stop=num_elems, step=step)
-
-        if (num_max_points or step):
-            if verbose:
-                print("TUMCSV2DataFrame.subsample_DataFrame():")
-                print("* len: " + str(num_elems) + ", max_num_points: " + str(
-                    num_max_points) + ", subsample by: " + str(step))
-
-            df_sub = df.loc[sparse_indices]
-            df_sub.reset_index(inplace=True)
-
-            return df_sub
-
-        else:
-            return df
 
 
 ########################################################################################################################
@@ -172,8 +124,7 @@ class TUMCSVdata_Test(unittest.TestCase):
                           [3]])
         df = TUMCSV2DataFrame.TPQ_to_DataFrame(t_vec, p_vec, q_vec)
         print(str(df))
-        TUMCSV2DataFrame.save_TUM_CSV(df,
-                                      '../test/example/any.csv')
+        CSV2DataFrame.save_CSV(data_frame=df, filename='../results/any.csv', format=CSVFormat.TUM)
 
     def test_subsample_DataFrame(self):
         d = self.load_sample_data_frame()
@@ -183,8 +134,7 @@ class TUMCSVdata_Test(unittest.TestCase):
 
         self.assertTrue(len(df_sub.index) <= num_samples)
 
-        TUMCSV2DataFrame.save_TUM_CSV(df_sub,
-                                      '../test/example/gt_sub_200.csv')
+        CSV2DataFrame.save_CSV(data_frame=df_sub, filename='../results/gt_sub_200.csv', format=CSVFormat.TUM)
 
 
 if __name__ == "__main__":
