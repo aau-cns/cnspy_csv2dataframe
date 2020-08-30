@@ -20,23 +20,26 @@
 ########################################################################################################################
 import os
 from ros_csv_formats.CSVFormat import CSVFormat
+from TUMCSV2DataFrame import TUMCSV2DataFrame
+from PoseCovCSV2DataFrame import PoseCovCSV2DataFrame
 
 
 class CSV2DataFrame:
-    def __init__(self):
-        pass
+    format = CSVFormat.none
+    df = None
 
-    @staticmethod
-    def identify_format(fn):
-        if os.path.exists(fn):
-            with open(fn, "r") as file:
-                header = str(file.readline()).rstrip("\n\r")
-                for fmt in list(CSVFormat):
-                    h_ = ",".join(CSVFormat.get_header(fmt))
-                    if h_.replace(" ", "") == header.replace(" ", ""):
-                        return CSVFormat(fmt)
+    def __init__(self, fn):
+        fmt = CSVFormat.identify_format(fn)
+        if fmt is not CSVFormat.none:
+            self.format = fmt
+            if fmt == CSVFormat.TUM:
+                self.df = TUMCSV2DataFrame.load_CSV(fn)
 
-        return CSVFormat.none
+            elif fmt == CSVFormat.PoseCov:
+                self.df = PoseCovCSV2DataFrame.load_CSV(fn)
+            else:
+                print('CSV2DataFrame: format {0} not supported!'.format(fmt))
+                self.format = CSVFormat.none
 
 
 ########################################################################################################################
@@ -46,13 +49,9 @@ import unittest
 
 
 class CSV2DataFrame_Test(unittest.TestCase):
-    def test_identify(self):
-        fmt = CSV2DataFrame.identify_format('../test/example/gt.csv')
-        print('identify_format:' + str(fmt))
-        fmt = CSV2DataFrame.identify_format('../test/example/sensor_PoseCov.csv')
-        print('identify_format:' + str(fmt))
-        fmt = CSV2DataFrame.identify_format('../test/example/uwb.csv')
-        print('identify_format:' + str(fmt))
+    def test_CTOR(self):
+        d1 = CSV2DataFrame('../test/example/gt.csv')
+        self.assertTrue(d1.format == CSVFormat.TUM)
 
 
 if __name__ == '__main__':

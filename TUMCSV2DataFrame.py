@@ -34,23 +34,23 @@ class TUMCSV2DataFrame:
 
     def load_from_CSV(self, filename):
         if os.path.exists(filename):
-            self.data_frame = TUMCSV2DataFrame.load_TUM_CSV(filename=filename)
+            self.data_frame = TUMCSV2DataFrame.load_CSV(filename=filename)
             self.data_loaded = True
 
     def save_to_CSV(self, filename):
-        TUMCSV2DataFrame.save_TUM_CSV(self.data_frame, filename=filename)
+        TUMCSV2DataFrame.save_CSV(self.data_frame, filename=filename)
 
     def subsampe(self, step=None, num_max_points=None):
         self.data_frame = TUMCSV2DataFrame.subsample_DataFrame(self.data_frame, step=step,
                                                                num_max_points=num_max_points)
 
     @staticmethod
-    def load_TUM_CSV(filename, sep='\s+|\,', comment='#', header=CSVFormat.get_format(CSVFormat.TUM)):
+    def load_CSV(filename, sep='\s+|\,', comment='#', header=CSVFormat.get_format(CSVFormat.TUM)):
         data = pandas.read_csv(filename, sep=sep, comment=comment, header=None, names=header, engine='python')
         return data
 
     @staticmethod
-    def save_TUM_CSV(data_frame, filename, save_index=False):
+    def save_CSV(data_frame, filename, save_index=False):
         head = os.path.dirname(os.path.abspath(filename))
         if not os.path.exists(head):
             os.makedirs(head)
