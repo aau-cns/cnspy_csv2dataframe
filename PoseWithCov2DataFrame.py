@@ -81,12 +81,12 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
             cov_vec_q[i] = mat_to_tri_vec(P_vec_q[i])
 
         data_frame = pandas.DataFrame(
-            {'t': t_vec[:, 0], 'tx': p_vec[:, 0], 'ty': p_vec[:, 1], 'tz': p_vec[:, 2], 'qx': q_vec[:, 0],
-             'qy': q_vec[:, 1], 'qz': q_vec[:, 2], 'qw': q_vec[:, 3], 'pxx': cov_vec_p[:, 0], 'pxy': cov_vec_p[:, 1],
-             'pxz': cov_vec_p[:, 2], 'pyy': cov_vec_p[:, 3], 'pyz': cov_vec_p[:, 4], 'pzz': cov_vec_p[:, 5],
-             'qrr': cov_vec_q[:, 0],
-             'qrp': cov_vec_q[:, 1], 'qry': cov_vec_q[:, 2], 'qpp': cov_vec_q[:, 3], 'qpy': cov_vec_q[:, 4],
-             'qyy': cov_vec_q[:, 5]})
+            {'t': t_vec[:, 0], 'tx': p_vec[:, 0], 'ty': p_vec[:, 1], 'tz': p_vec[:, 2],
+             'qx': q_vec[:, 0], 'qy': q_vec[:, 1], 'qz': q_vec[:, 2], 'qw': q_vec[:, 3],
+             'pxx': cov_vec_p[:, 0], 'pxy': cov_vec_p[:, 1], 'pxz': cov_vec_p[:, 2], 'pyy': cov_vec_p[:, 3],
+             'pyz': cov_vec_p[:, 4], 'pzz': cov_vec_p[:, 5],
+             'qrr': cov_vec_q[:, 0], 'qrp': cov_vec_q[:, 1], 'qry': cov_vec_q[:, 2], 'qpp': cov_vec_q[:, 3],
+             'qpy': cov_vec_q[:, 4], 'qyy': cov_vec_q[:, 5]})
         return data_frame
 
 
