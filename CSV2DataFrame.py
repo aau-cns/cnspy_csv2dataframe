@@ -97,6 +97,9 @@ class CSV2DataFrame_Test(unittest.TestCase):
         d1 = CSV2DataFrame('../test/example/gt.csv')
         self.assertTrue(d1.format == CSVFormat.TUM)
 
+        d2 = CSV2DataFrame("/home/jungr/workspace/CNS/aaucns_scripts/matlab/results/TUM_test.csv", fmt=CSVFormat.TUM)
+        self.assertTrue(d2.format == CSVFormat.TUM)
+
 
 if __name__ == '__main__':
     unittest.main()
