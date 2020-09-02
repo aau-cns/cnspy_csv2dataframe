@@ -29,6 +29,7 @@ class CSV2DataFrame:
     format = CSVFormat.none
     data_frame = None
     data_loaded = False
+    fn = None
 
     def __init__(self, filename, fmt=None):
         if os.path.exists(filename):
@@ -38,6 +39,12 @@ class CSV2DataFrame:
                 self.format = fmt
                 self.data_frame = CSV2DataFrame.load_CSV(filename, fmt)
                 self.data_loaded = True
+                self.fn = filename
+            else:
+                print("CSV2DataFrame: unknown format!")
+
+        else:
+            print("CSV2DataFrame: file does not exist: {0}".format(filename))
 
     def subsample(self, step=None, num_max_points=None):
         self.data_frame = CSV2DataFrame.subsample_DataFrame(self.data_frame, step=step,
