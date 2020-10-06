@@ -21,7 +21,7 @@
 ########################################################################################################################
 import os
 from ros_csv_formats.CSVFormat import CSVFormat
-from CSV2DataFrame import CSV2DataFrame
+from csv2dataframe.CSV2DataFrame import CSV2DataFrame
 
 
 class PoseCovCSV2DataFrame(CSV2DataFrame):

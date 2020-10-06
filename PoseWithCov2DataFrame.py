@@ -21,7 +21,7 @@
 ########################################################################################################################
 import os
 from ros_csv_formats.CSVFormat import CSVFormat
-from CSV2DataFrame import CSV2DataFrame
+from csv2dataframe.CSV2DataFrame import CSV2DataFrame
 import numpy as np
 import pandas as pandas
 from numpy_utils.matrix_conversions import *
@@ -61,13 +61,12 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
 
     @staticmethod
     def TPQCov_to_DataFrame(t_vec, p_vec, q_vec, P_vec_p, P_vec_q):
-        t_rows, t_cols = t_vec.shape
+        t_rows, t_cols = t_vec.shape  # does not work in Python 3
         p_rows, p_cols = p_vec.shape
         q_rows, q_cols = q_vec.shape
         P_p_len, P_p_rows, P_p_cols = P_vec_p.shape
         assert (t_rows == p_rows)
         assert (t_rows == q_rows)
-        assert (t_cols == 1)
         assert (p_cols == 3)
         assert (q_cols == 4)
         assert (P_p_len == t_rows)
@@ -108,7 +107,7 @@ class PoseWithCov2DataFrame_Test(unittest.TestCase):
         self.start_time = time.time()
 
     def stop(self):
-        print "Process time: " + str((time.time() - self.start_time))
+        print("Process time: " + str((time.time() - self.start_time)))
 
     def load_(self):
         print('loading...')

@@ -102,11 +102,11 @@ import unittest
 
 class CSV2DataFrame_Test(unittest.TestCase):
     def test_CTOR(self):
-        d1 = CSV2DataFrame('../test/example/gt.csv')
+        d1 = CSV2DataFrame('../sample_data/ID1-pose-gt.csv')
         self.assertTrue(d1.format == CSVFormat.TUM)
 
-        d2 = CSV2DataFrame("/home/jungr/workspace/CNS/aaucns_scripts/matlab/results/TUM_test.csv", fmt=CSVFormat.TUM)
-        self.assertTrue(d2.format == CSVFormat.TUM)
+        d2 = CSV2DataFrame('../sample_data/ID1-pose-est-cov.csv', fmt=CSVFormat.PoseCov)
+        self.assertTrue(d2.format == CSVFormat.PoseCov)
 
 
 if __name__ == '__main__':

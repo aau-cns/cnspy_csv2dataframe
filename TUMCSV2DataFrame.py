@@ -23,20 +23,20 @@ import os
 import math
 import pandas as pandas
 from ros_csv_formats.CSVFormat import CSVFormat
-from CSV2DataFrame import CSV2DataFrame
+from csv2dataframe.CSV2DataFrame import CSV2DataFrame
 
 
 class TUMCSV2DataFrame(CSV2DataFrame):
-    def __init__(self, fn=None):
-        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormat.TUM)
+    def __init__(self, fn=''):
+        super().__init__(filename=fn, fmt=CSVFormat.TUM)
 
     def load_from_CSV(self, fn):
         if os.path.exists(fn):
-            self.data_frame = CSV2DataFrame.load_CSV(filename=fn, fm=CSVFormat.TUM)
+            self.data_frame = CSV2DataFrame.load_CSV(filename=fn, fmt=CSVFormat.TUM)
             self.data_loaded = True
 
     def save_to_CSV(self, fn):
-        CSV2DataFrame.save_CSV(self.data_frame, filename=fn, format=CSVFormat.TUM)
+        CSV2DataFrame.save_CSV(self.data_frame, filename=fn, fmt=CSVFormat.TUM)
 
     @staticmethod
     def DataFrame_to_numpy_dict(df):
@@ -55,6 +55,8 @@ class TUMCSV2DataFrame(CSV2DataFrame):
     @staticmethod
     def DataFrame_to_TPQ(data_frame):
         t_vec = data_frame.as_matrix(['t'])
+        # t_vec = data_frame['t'].to_numpy()
+        # TODO: find a solution with .to_numpy() supporting multiple columns...
         p_vec = data_frame.as_matrix(['tx', 'ty', 'tz'])
         q_vec = data_frame.as_matrix(['qx', 'qy', 'qz', 'qw'])
 
@@ -86,15 +88,14 @@ import numpy as np
 
 class TUMCSVdata_Test(unittest.TestCase):
     def load_sample_data_frame(self):
-        return TUMCSV2DataFrame(
-            filename='../test/example/gt.csv')
+        return TUMCSV2DataFrame(fn='../sample_data/ID1-pose-est.csv')
 
     def test_load_from_CSV(self):
         print('loading...')
         d = self.load_sample_data_frame()
         self.assertTrue(d.data_loaded)
 
-        d = TUMCSV2DataFrame(filename='no file')
+        d = TUMCSV2DataFrame(fn='no file')
         self.assertFalse(d.data_loaded)
 
     def test_data_to_numpy_dict(self):
@@ -125,7 +126,7 @@ class TUMCSVdata_Test(unittest.TestCase):
                           [3]])
         df = TUMCSV2DataFrame.TPQ_to_DataFrame(t_vec, p_vec, q_vec)
         print(str(df))
-        CSV2DataFrame.save_CSV(data_frame=df, filename='../results/any.csv', format=CSVFormat.TUM)
+        CSV2DataFrame.save_CSV(data_frame=df, filename='../results/any.csv', fmt=CSVFormat.TUM)
 
     def test_subsample_DataFrame(self):
         d = self.load_sample_data_frame()
@@ -135,7 +136,7 @@ class TUMCSVdata_Test(unittest.TestCase):
 
         self.assertTrue(len(df_sub.index) <= num_samples)
 
-        CSV2DataFrame.save_CSV(data_frame=df_sub, filename='../results/gt_sub_200.csv', format=CSVFormat.TUM)
+        CSV2DataFrame.save_CSV(data_frame=df_sub, filename='../results/gt_sub_200.csv', fmt=CSVFormat.TUM)
 
 
 if __name__ == "__main__":
