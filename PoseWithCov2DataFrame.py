@@ -124,6 +124,8 @@ class PoseWithCov2DataFrame_Test(unittest.TestCase):
 
         print(P_vec_p[1000])
         print(P_vec_q[1000])
+        print(p_vec[1000])
+        print(q_vec[1000])
 
 
 if __name__ == "__main__":

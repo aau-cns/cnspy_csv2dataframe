@@ -104,9 +104,10 @@ class CSV2DataFrame_Test(unittest.TestCase):
     def test_CTOR(self):
         d1 = CSV2DataFrame('../sample_data/ID1-pose-gt.csv')
         self.assertTrue(d1.format == CSVFormat.TUM)
-
+        self.assertTrue(d1.data_loaded)
         d2 = CSV2DataFrame('../sample_data/ID1-pose-est-cov.csv', fmt=CSVFormat.PoseCov)
         self.assertTrue(d2.format == CSVFormat.PoseCov)
+        self.assertTrue(d2.data_loaded)
 
 
 if __name__ == '__main__':
