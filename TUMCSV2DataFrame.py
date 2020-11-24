@@ -54,11 +54,14 @@ class TUMCSV2DataFrame(CSV2DataFrame):
 
     @staticmethod
     def DataFrame_to_TPQ(data_frame):
-        t_vec = data_frame.as_matrix(['t'])
-        # t_vec = data_frame['t'].to_numpy()
-        # TODO: find a solution with .to_numpy() supporting multiple columns...
-        p_vec = data_frame.as_matrix(['tx', 'ty', 'tz'])
-        q_vec = data_frame.as_matrix(['qx', 'qy', 'qz', 'qw'])
+        # FIX(scm): for newer versions as_matrix is deprecated, using to_numpy instead
+        # from https://stackoverflow.com/questions/60164560/attributeerror-series-object-has-no-attribute-as-matrix-why-is-it-error
+        # t_vec = data_frame.as_matrix(['t'])
+        # p_vec = data_frame.as_matrix(['tx', 'ty', 'tz'])
+        # q_vec = data_frame.as_matrix(['qx', 'qy', 'qz', 'qw'])
+        t_vec = data_frame[['t']].to_numpy()
+        p_vec = data_frame[['tx', 'ty', 'tz']].to_numpy()
+        q_vec = data_frame[['qx', 'qy', 'qz', 'qw']].to_numpy()
 
         return t_vec, p_vec, q_vec
 
