@@ -20,10 +20,10 @@
 # sudo pip install numpy pandas
 ########################################################################################################################
 import os
+from sys import version_info
+import pandas as pandas
 from ros_csv_formats.CSVFormat import CSVFormat
 from csv2dataframe.CSV2DataFrame import CSV2DataFrame
-import numpy as np
-import pandas as pandas
 from numpy_utils.matrix_conversions import *
 
 
@@ -41,19 +41,20 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
 
     @staticmethod
     def DataFrame_to_TPQCov(data_frame):
-
-        # FIX(scm): for newer versions as_matrix is deprecated, using to_numpy instead
-        # from https://stackoverflow.com/questions/60164560/attributeerror-series-object-has-no-attribute-as-matrix-why-is-it-error
-        # t_vec = data_frame.as_matrix(['t'])
-        # p_vec = data_frame.as_matrix(['tx', 'ty', 'tz'])
-        # q_vec = data_frame.as_matrix(['qx', 'qy', 'qz', 'qw'])
-        # cov_vec_p = data_frame.as_matrix(['pxx', 'pxy', 'pxz', 'pyy', 'pyz', 'pzz'])
-        # cov_vec_q = data_frame.as_matrix(['qrr', 'qrp', 'qry', 'qpp', 'qpy', 'qyy'])
-        t_vec = data_frame[['t']].to_numpy()
-        p_vec = data_frame[['tx', 'ty', 'tz']].to_numpy()
-        q_vec = data_frame[['qx', 'qy', 'qz', 'qw']].to_numpy()
-        cov_vec_p = data_frame[['pxx', 'pxy', 'pxz', 'pyy', 'pyz', 'pzz']].to_numpy()
-        cov_vec_q = data_frame[['qrr', 'qrp', 'qry', 'qpp', 'qpy', 'qyy']].to_numpy()
+        if version_info[0] < 3:
+            t_vec = data_frame.as_matrix(['t'])
+            p_vec = data_frame.as_matrix(['tx', 'ty', 'tz'])
+            q_vec = data_frame.as_matrix(['qx', 'qy', 'qz', 'qw'])
+            cov_vec_p = data_frame.as_matrix(['pxx', 'pxy', 'pxz', 'pyy', 'pyz', 'pzz'])
+            cov_vec_q = data_frame.as_matrix(['qrr', 'qrp', 'qry', 'qpp', 'qpy', 'qyy'])
+        else:
+            # FIX(scm): for newer versions as_matrix is deprecated, using to_numpy instead
+            # from https://stackoverflow.com/questions/60164560/attributeerror-series-object-has-no-attribute-as-matrix-why-is-it-error
+            t_vec = data_frame[['t']].to_numpy()
+            p_vec = data_frame[['tx', 'ty', 'tz']].to_numpy()
+            q_vec = data_frame[['qx', 'qy', 'qz', 'qw']].to_numpy()
+            cov_vec_p = data_frame[['pxx', 'pxy', 'pxz', 'pyy', 'pyz', 'pzz']].to_numpy()
+            cov_vec_q = data_frame[['qrr', 'qrp', 'qry', 'qpp', 'qpy', 'qyy']].to_numpy()
 
         l = t_vec.shape[0]
 

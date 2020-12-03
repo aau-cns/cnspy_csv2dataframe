@@ -20,6 +20,7 @@
 # sudo pip install numpy pandas
 ########################################################################################################################
 import os
+from sys import version_info
 import math
 import pandas as pandas
 from ros_csv_formats.CSVFormat import CSVFormat
@@ -28,7 +29,7 @@ from csv2dataframe.CSV2DataFrame import CSV2DataFrame
 
 class TUMCSV2DataFrame(CSV2DataFrame):
     def __init__(self, fn=''):
-        super().__init__(filename=fn, fmt=CSVFormat.TUM)
+        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormat.TUM)
 
     def load_from_CSV(self, fn):
         if os.path.exists(fn):
@@ -54,14 +55,16 @@ class TUMCSV2DataFrame(CSV2DataFrame):
 
     @staticmethod
     def DataFrame_to_TPQ(data_frame):
-        # FIX(scm): for newer versions as_matrix is deprecated, using to_numpy instead
-        # from https://stackoverflow.com/questions/60164560/attributeerror-series-object-has-no-attribute-as-matrix-why-is-it-error
-        # t_vec = data_frame.as_matrix(['t'])
-        # p_vec = data_frame.as_matrix(['tx', 'ty', 'tz'])
-        # q_vec = data_frame.as_matrix(['qx', 'qy', 'qz', 'qw'])
-        t_vec = data_frame[['t']].to_numpy()
-        p_vec = data_frame[['tx', 'ty', 'tz']].to_numpy()
-        q_vec = data_frame[['qx', 'qy', 'qz', 'qw']].to_numpy()
+        if version_info[0] < 3:
+            t_vec = data_frame.as_matrix(['t'])
+            p_vec = data_frame.as_matrix(['tx', 'ty', 'tz'])
+            q_vec = data_frame.as_matrix(['qx', 'qy', 'qz', 'qw'])
+        else:
+            # FIX(scm): for newer versions as_matrix is deprecated, using to_numpy instead
+            # from https://stackoverflow.com/questions/60164560/attributeerror-series-object-has-no-attribute-as-matrix-why-is-it-error
+            t_vec = data_frame[['t']].to_numpy()
+            p_vec = data_frame[['tx', 'ty', 'tz']].to_numpy()
+            q_vec = data_frame[['qx', 'qy', 'qz', 'qw']].to_numpy()
 
         return t_vec, p_vec, q_vec
 
