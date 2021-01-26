@@ -31,14 +31,6 @@ class TUMCSV2DataFrame(CSV2DataFrame):
     def __init__(self, fn=''):
         CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormat.TUM)
 
-    def load_from_CSV(self, fn):
-        if os.path.exists(fn):
-            self.data_frame = CSV2DataFrame.load_CSV(filename=fn, fmt=CSVFormat.TUM)
-            self.data_loaded = True
-
-    def save_to_CSV(self, fn):
-        CSV2DataFrame.save_CSV(self.data_frame, filename=fn, fmt=CSVFormat.TUM)
-
     @staticmethod
     def DataFrame_to_numpy_dict(df):
         np_dict = {
@@ -60,8 +52,6 @@ class TUMCSV2DataFrame(CSV2DataFrame):
             p_vec = data_frame.as_matrix(['tx', 'ty', 'tz'])
             q_vec = data_frame.as_matrix(['qx', 'qy', 'qz', 'qw'])
         else:
-            # FIX(scm): for newer versions as_matrix is deprecated, using to_numpy instead
-            # from https://stackoverflow.com/questions/60164560/attributeerror-series-object-has-no-attribute-as-matrix-why-is-it-error
             t_vec = data_frame[['t']].to_numpy()
             p_vec = data_frame[['tx', 'ty', 'tz']].to_numpy()
             q_vec = data_frame[['qx', 'qy', 'qz', 'qw']].to_numpy()
@@ -94,7 +84,7 @@ import numpy as np
 
 class TUMCSVdata_Test(unittest.TestCase):
     def load_sample_data_frame(self):
-        return TUMCSV2DataFrame(fn='../sample_data/ID1-pose-est.csv')
+        return TUMCSV2DataFrame(fn='./sample_data/ID1-pose-gt.csv')
 
     def test_load_from_CSV(self):
         print('loading...')
@@ -132,7 +122,7 @@ class TUMCSVdata_Test(unittest.TestCase):
                           [3]])
         df = TUMCSV2DataFrame.TPQ_to_DataFrame(t_vec, p_vec, q_vec)
         print(str(df))
-        CSV2DataFrame.save_CSV(data_frame=df, filename='../results/any.csv', fmt=CSVFormat.TUM)
+        CSV2DataFrame.save_CSV(data_frame=df, filename='./sample_data/results/any.csv', fmt=CSVFormat.TUM)
 
     def test_subsample_DataFrame(self):
         d = self.load_sample_data_frame()
@@ -142,7 +132,7 @@ class TUMCSVdata_Test(unittest.TestCase):
 
         self.assertTrue(len(df_sub.index) <= num_samples)
 
-        CSV2DataFrame.save_CSV(data_frame=df_sub, filename='../results/gt_sub_200.csv', fmt=CSVFormat.TUM)
+        CSV2DataFrame.save_CSV(data_frame=df_sub, filename='./sample_data/results/gt_sub_200.csv', fmt=CSVFormat.TUM)
 
 
 if __name__ == "__main__":

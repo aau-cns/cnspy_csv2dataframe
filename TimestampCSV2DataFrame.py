@@ -19,7 +19,6 @@
 # Requirements:
 # sudo pip install numpy pandas
 ########################################################################################################################
-import os
 from sys import version_info
 import pandas as pandas
 from ros_csv_formats.CSVFormat import CSVFormat
@@ -29,14 +28,6 @@ from csv2dataframe.CSV2DataFrame import CSV2DataFrame
 class TimestampCSV2DataFrame(CSV2DataFrame):
     def __init__(self, fn=''):
         CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormat.Timestamp)
-
-    def load_from_CSV(self, fn):
-        if os.path.exists(fn):
-            self.data_frame = CSV2DataFrame.load_CSV(filename=fn, fmt=self.format)
-            self.data_loaded = True
-
-    def save_to_CSV(self, fn):
-        CSV2DataFrame.save_CSV(self.data_frame, filename=fn, fmt=self.format)
 
     def get_t_vec(self):
         if self.data_loaded:
@@ -52,12 +43,11 @@ class TimestampCSV2DataFrame(CSV2DataFrame):
 #################################################### T E S T ###########################################################
 ########################################################################################################################
 import unittest
-import numpy as np
 
 
 class TimestampCSV2DataFrame_Test(unittest.TestCase):
     def load_sample_data_frame(self):
-        return TimestampCSV2DataFrame(fn='../sample_data/t_est.csv')
+        return TimestampCSV2DataFrame(fn='./sample_data/t_est.csv')
 
     def test_get_t_vec(self):
         dut = self.load_sample_data_frame()
@@ -68,7 +58,7 @@ class TimestampCSV2DataFrame_Test(unittest.TestCase):
     def test_save_to_CSV(self):
         dut = self.load_sample_data_frame()
         self.assertTrue(dut.data_loaded)
-        dut.save_to_CSV(fn='../sample_data/results/t_est_copy.csv')
+        dut.save_to_CSV(fn='./sample_data/results/t_est_copy.csv')
 
 
 if __name__ == "__main__":

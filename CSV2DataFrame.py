@@ -32,24 +32,46 @@ class CSV2DataFrame:
     data_loaded = False
     fn = None
 
-    def __init__(self, filename, fmt=None):
-        if os.path.exists(filename):
-            if fmt is None:
-                fmt = CSVFormat.identify_format(filename)
-            if fmt is not CSVFormat.none:
-                self.format = fmt
-                self.data_frame = CSV2DataFrame.load_CSV(filename, fmt)
-                self.data_loaded = True
-                self.fn = filename
-            else:
-                print("CSV2DataFrame: unknown format!")
-
+    def __init__(self, filename=None, fmt=None):
+        if filename is None:
+            pass  # Do nothing.. data can be loaded later on!
         else:
-            print("CSV2DataFrame: file does not exist: {0}".format(filename))
+            self.load_from_CSV(fn=filename, fmt=fmt)
 
     def subsample(self, step=None, num_max_points=None):
-        self.data_frame = CSV2DataFrame.subsample_DataFrame(self.data_frame, step=step,
-                                                            num_max_points=num_max_points)
+        if self.data_loaded:
+            self.data_frame = CSV2DataFrame.subsample_DataFrame(self.data_frame, step=step,
+                                                                num_max_points=num_max_points)
+        else:
+            print("CSV2DataFrame: data was not loaded!")
+
+    def load_from_CSV(self, fn, fmt=None):
+        if os.path.exists(fn):
+            if fmt is not None:
+                fmt_ = fmt
+            elif fmt is None and self.format is not CSVFormat.none:
+                fmt_ = self.format
+            else:
+                fmt_ = CSVFormat.identify_format(fn)
+
+            if fmt_ is not CSVFormat.none:
+                self.data_frame = CSV2DataFrame.load_CSV(filename=fn, fmt=fmt_)
+                self.fn = fn
+                self.data_loaded = True
+                self.format = fmt_
+                return True
+        else:
+            print("CSV2DataFrame.load_from_CSV(): file does not exist: {0}".format(fn))
+        return False
+
+    def save_to_CSV(self, fn, fmt=None):
+        if fmt is None:
+            fmt_ = self.format
+
+        if self.data_loaded:
+            CSV2DataFrame.save_CSV(data_frame=self.data_frame, filename=fn, fmt=fmt_)
+        else:
+            print("CSV2DataFrame: data was not loaded!")
 
     @staticmethod
     def load_CSV(filename, fmt):
@@ -102,12 +124,17 @@ import unittest
 
 class CSV2DataFrame_Test(unittest.TestCase):
     def test_CTOR(self):
-        d1 = CSV2DataFrame('../sample_data/ID1-pose-gt.csv')
+        d1 = CSV2DataFrame('./sample_data/ID1-pose-gt.csv')
         self.assertTrue(d1.format == CSVFormat.TUM)
         self.assertTrue(d1.data_loaded)
-        d2 = CSV2DataFrame('../sample_data/ID1-pose-est-cov.csv', fmt=CSVFormat.PoseCov)
+        d2 = CSV2DataFrame('./sample_data/ID1-pose-est-cov.csv', fmt=CSVFormat.PoseCov)
         self.assertTrue(d2.format == CSVFormat.PoseCov)
         self.assertTrue(d2.data_loaded)
+
+        d3 = CSV2DataFrame()
+        d3.load_from_CSV(fn='./sample_data/ID1-pose-est-cov.csv')
+        self.assertTrue(d3.data_loaded)
+        d3.save_to_CSV(fn='./sample_data/ID1-pose-est-cov.COPY.csv')
 
 
 if __name__ == '__main__':

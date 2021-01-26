@@ -31,14 +31,6 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
     def __init__(self, fn=None):
         CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormat.PoseWithCov)
 
-    def load_from_CSV(self, fn):
-        if os.path.exists(fn):
-            self.data_frame = CSV2DataFrame.load_CSV(filename=fn, fm=CSVFormat.PoseWithCov)
-            self.data_loaded = True
-
-    def save_to_CSV(self, fn):
-        CSV2DataFrame.save_CSV(self.data_frame, filename=fn, format=CSVFormat.PoseWithCov)
-
     @staticmethod
     def DataFrame_to_TPQCov(data_frame):
         if version_info[0] < 3:
@@ -120,7 +112,7 @@ class PoseWithCov2DataFrame_Test(unittest.TestCase):
 
     def load_(self):
         print('loading...')
-        fn = '../sample_data/ID1-pose-est-cov.csv'
+        fn = './sample_data/ID1-pose-est-cov.csv'
         obj = PoseWithCov2DataFrame(fn=fn)
         return obj
 
