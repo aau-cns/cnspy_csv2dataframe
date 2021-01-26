@@ -23,7 +23,7 @@ import os
 from sys import version_info
 import math
 import pandas as pandas
-from ros_csv_formats.CSVFormat import CSVFormat
+from spatial_csv_formats.CSVFormat import CSVFormat
 from csv2dataframe.CSV2DataFrame import CSV2DataFrame
 
 
