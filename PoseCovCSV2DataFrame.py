@@ -20,10 +20,10 @@
 # sudo pip install numpy pandas
 ########################################################################################################################
 import os
-from spatial_csv_formats.CSVFormat import CSVFormat
+from spatial_csv_formats.CSVFormatPose import CSVFormatPose
 from csv2dataframe.CSV2DataFrame import CSV2DataFrame
 
 
 class PoseCovCSV2DataFrame(CSV2DataFrame):
     def __init__(self, fn=None):
-        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormat.PoseCov)
+        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormatPose.PoseCov)

@@ -22,14 +22,14 @@
 import os
 from sys import version_info
 import pandas as pandas
-from spatial_csv_formats.CSVFormat import CSVFormat
+from spatial_csv_formats.CSVFormatPose import CSVFormatPose
 from csv2dataframe.CSV2DataFrame import CSV2DataFrame
 from numpy_utils.matrix_conversions import *
 
 
 class PoseWithCov2DataFrame(CSV2DataFrame):
     def __init__(self, fn=None):
-        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormat.PoseWithCov)
+        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormatPose.PoseWithCov)
 
     @staticmethod
     def DataFrame_to_TPQCov(data_frame):

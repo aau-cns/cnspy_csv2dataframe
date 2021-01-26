@@ -23,11 +23,11 @@ import os
 import math
 import pandas as pandas
 import numpy as np
-from spatial_csv_formats.CSVFormat import CSVFormat
+from spatial_csv_formats.CSVFormatPose import CSVFormatPose
 
 
 class CSV2DataFrame:
-    format = CSVFormat.none
+    format = CSVFormatPose.none
     data_frame = None
     data_loaded = False
     fn = None
@@ -49,12 +49,12 @@ class CSV2DataFrame:
         if os.path.exists(fn):
             if fmt is not None:
                 fmt_ = fmt
-            elif fmt is None and self.format is not CSVFormat.none:
+            elif fmt is None and self.format is not CSVFormatPose.none:
                 fmt_ = self.format
             else:
-                fmt_ = CSVFormat.identify_format(fn)
+                fmt_ = CSVFormatPose.identify_format(fn)
 
-            if fmt_ is not CSVFormat.none:
+            if fmt_ is not CSVFormatPose.none:
                 self.data_frame = CSV2DataFrame.load_CSV(filename=fn, fmt=fmt_)
                 self.fn = fn
                 self.data_loaded = True
@@ -75,7 +75,7 @@ class CSV2DataFrame:
 
     @staticmethod
     def load_CSV(filename, fmt):
-        data = pandas.read_csv(filename, sep='\s+|\,', comment='#', header=None, names=CSVFormat.get_format(fmt),
+        data = pandas.read_csv(filename, sep='\s+|\,', comment='#', header=None, names=CSVFormatPose.get_format(fmt),
                                engine='python')
         return data
 
@@ -86,8 +86,8 @@ class CSV2DataFrame:
             os.makedirs(head)
 
         data_frame.to_csv(filename, sep=',', index=save_index,
-                          header=CSVFormat.get_header(fmt),
-                          columns=CSVFormat.get_format(fmt))
+                          header=CSVFormatPose.get_header(fmt),
+                          columns=CSVFormatPose.get_format(fmt))
 
     @staticmethod
     def subsample_DataFrame(df, step=None, num_max_points=None, verbose=False):
@@ -125,10 +125,10 @@ import unittest
 class CSV2DataFrame_Test(unittest.TestCase):
     def test_CTOR(self):
         d1 = CSV2DataFrame('./sample_data/ID1-pose-gt.csv')
-        self.assertTrue(d1.format == CSVFormat.TUM)
+        self.assertTrue(d1.format == CSVFormatPose.TUM)
         self.assertTrue(d1.data_loaded)
-        d2 = CSV2DataFrame('./sample_data/ID1-pose-est-cov.csv', fmt=CSVFormat.PoseCov)
-        self.assertTrue(d2.format == CSVFormat.PoseCov)
+        d2 = CSV2DataFrame('./sample_data/ID1-pose-est-cov.csv', fmt=CSVFormatPose.PoseCov)
+        self.assertTrue(d2.format == CSVFormatPose.PoseCov)
         self.assertTrue(d2.data_loaded)
 
         d3 = CSV2DataFrame()
