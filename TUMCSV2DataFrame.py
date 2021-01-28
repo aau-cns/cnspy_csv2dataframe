@@ -60,7 +60,12 @@ class TUMCSV2DataFrame(CSV2DataFrame):
 
     @staticmethod
     def TPQ_to_DataFrame(t_vec, p_vec, q_vec):
-        t_rows, t_cols = t_vec.shape
+        if t_vec.ndim == 2:
+            t_rows, t_cols = t_vec.shape
+        else:
+            t_vec = np.array([t_vec])
+            t_rows, t_cols = t_vec.shape
+
         p_rows, p_cols = p_vec.shape
         q_rows, q_cols = q_vec.shape
         assert (t_rows == p_rows)
