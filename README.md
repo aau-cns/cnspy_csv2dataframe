@@ -1,9 +1,9 @@
 # csv2dataframe Package
 
 
-The class [CSV2DataFrame](CSV2DataFrame.py) is intended to load [CSV-files](https://en.wikipedia.org/wiki/Comma-separated_values) into a `pandas.DataFrame`. The CSV files need to match known formats (defined by their header in the first line) according to those defined in the package [ros_csv_formats]().
+The class [CSV2DataFrame](CSV2DataFrame.py) is intended to load [CSV-files](https://en.wikipedia.org/wiki/Comma-separated_values) into a `pandas.DataFrame`. The CSV files need to match known formats (defined by their header in the first line) according to those defined in the package [spatial_csv_formats]().
   
-In case no format is specified, it tries to match the first line of the CSV-File with known headers from [ros_csv_formats]() and loads the data in that format. 
+In case no format is specified, it tries to match the first line of the CSV-File with known headers from [spatial_csv_formats]() and loads the data in that format. 
 
 There a some specialization of  [CSV2DataFrame](CSV2DataFrame.py) that support different operations on the data:
 * [PoseCovCSV2DataFrame](PoseCovCSV2DataFrame.py)
@@ -16,7 +16,7 @@ There a some specialization of  [CSV2DataFrame](CSV2DataFrame.py) that support d
 
 * [numpy]()
 * [pandas]()
-* [ros_csv_formats]()
+* [spatial_csv_formats]()
 * [numpy_utils]()
 
 
