@@ -11,13 +11,21 @@ There a some specialization of  [CSV2DataFrame](CSV2DataFrame.py) that support d
 * [TimestampCSV2DataFrame](TimestampCSV2DataFrame.py)
 * [TUMCSV2DataFrame](TUMCSV2DataFrame.py)
 
+## Installation
+
+Install the current code base from GitHub and pip install a link to that cloned copy
+```
+git clone https://gitlab.aau.at/aau-cns/py3_pkgs/csv2dataframe.git
+cd csv2dataframe
+pip install -e .
+```
 
 ## Dependencies
 
 * [numpy]()
 * [pandas]()
-* [spatial_csv_formats]()
-* [numpy_utils]()
+* [spatial_csv_formats](https://gitlab.aau.at/aau-cns/py3_pkgs/spatial_csv_formats)
+* [numpy_utils](https://gitlab.aau.at/aau-cns/py3_pkgs/numpy_utils)
 
 
 ## License
@@ -25,4 +33,4 @@ There a some specialization of  [CSV2DataFrame](CSV2DataFrame.py) that support d
 
 Software License Agreement (GNU GPLv3  License), refer to the LICENSE file.
 
-*Sharing is caring!* - [Roland Jung](https://github.com/jungr-ait)  
+*Sharing is caring!* - [Roland Jung](https://github.com/jungr-ait)

@@ -1,0 +1,6 @@
+numpy
+pandas
+[-e] git+https://gitlab.aau.at/aau-cns/py3_pkgs/numpy_utils.git#egg=numpy_utils
+[-e] git+https://gitlab.aau.at/aau-cns/py3_pkgs/spatial_csv_formats.git#egg=spatial_csv_formats
+
+
