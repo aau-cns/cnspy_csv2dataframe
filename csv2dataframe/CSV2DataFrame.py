@@ -115,27 +115,3 @@ class CSV2DataFrame:
         else:
             return df
 
-
-########################################################################################################################
-#################################################### T E S T ###########################################################
-########################################################################################################################
-import unittest
-
-
-class CSV2DataFrame_Test(unittest.TestCase):
-    def test_CTOR(self):
-        d1 = CSV2DataFrame('./sample_data/ID1-pose-gt.csv')
-        self.assertTrue(d1.format == CSVFormatPose.TUM)
-        self.assertTrue(d1.data_loaded)
-        d2 = CSV2DataFrame('./sample_data/ID1-pose-est-cov.csv', fmt=CSVFormatPose.PoseCov)
-        self.assertTrue(d2.format == CSVFormatPose.PoseCov)
-        self.assertTrue(d2.data_loaded)
-
-        d3 = CSV2DataFrame()
-        d3.load_from_CSV(fn='./sample_data/ID1-pose-est-cov.csv')
-        self.assertTrue(d3.data_loaded)
-        d3.save_to_CSV(fn='./sample_data/ID1-pose-est-cov.COPY.csv')
-
-
-if __name__ == '__main__':
-    unittest.main()

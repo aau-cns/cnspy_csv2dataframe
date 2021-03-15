@@ -78,6 +78,8 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
         cov_vec_p = np.zeros((l, 6))
         cov_vec_q = np.zeros((l, 6))
         for i in range(0, l):
+            # https://stackoverflow.com/questions/17527693/transform-the-upper-lower-triangular-part-of-a-symmetric-matrix-2d-array-into/58806626#58806626
+            # https://stackoverflow.com/questions/8905501/extract-upper-or-lower-triangular-part-of-a-numpy-matrix
             cov_vec_p[i] = mat_to_tri_vec(P_vec_p[i])
             cov_vec_q[i] = mat_to_tri_vec(P_vec_q[i])
 
@@ -90,44 +92,4 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
              'qpy': cov_vec_q[:, 4], 'qyy': cov_vec_q[:, 5]})
         return data_frame
 
-
-# https://stackoverflow.com/questions/17527693/transform-the-upper-lower-triangular-part-of-a-symmetric-matrix-2d-array-into/58806626#58806626
-# https://stackoverflow.com/questions/8905501/extract-upper-or-lower-triangular-part-of-a-numpy-matrix
-
-########################################################################################################################
-#################################################### T E S T ###########################################################
-########################################################################################################################
-import unittest
-import time
-
-
-class PoseWithCov2DataFrame_Test(unittest.TestCase):
-    start_time = None
-
-    def start(self):
-        self.start_time = time.time()
-
-    def stop(self):
-        print("Process time: " + str((time.time() - self.start_time)))
-
-    def load_(self):
-        print('loading...')
-        fn = './sample_data/ID1-pose-est-cov.csv'
-        obj = PoseWithCov2DataFrame(fn=fn)
-        return obj
-
-    def test_load_trajectory_from_CSV(self):
-        obj = self.load_()
-        self.assertTrue(obj.data_loaded)
-        self.start()
-        t_vec, p_vec, q_vec, P_vec_p, P_vec_q = PoseWithCov2DataFrame.DataFrame_to_TPQCov(obj.data_frame)
-        self.stop()
-
-        print(P_vec_p[1000])
-        print(P_vec_q[1000])
-        print(p_vec[1000])
-        print(q_vec[1000])
-
-
-if __name__ == "__main__":
-    unittest.main()
+        
