@@ -1,15 +1,34 @@
+#!/usr/bin/env python
+# Software License Agreement (GNU GPLv3  License)
+#
+# Copyright (c) 2020, Roland Jung (roland.jung@aau.at) , AAU, KPK, NAV
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
 ########################################################################################################################
-#################################################### T E S T ###########################################################
-########################################################################################################################
+import os
 import unittest
 import numpy as np
 from csv2dataframe.TUMCSV2DataFrame import TUMCSV2DataFrame
 from csv2dataframe.CSV2DataFrame import CSV2DataFrame
 from spatial_csv_formats.CSVFormatPose import CSVFormatPose
 
+SAMPLE_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sample_data')
+
 class TUMCSVdata_Test(unittest.TestCase):
     def load_sample_data_frame(self):
-        return TUMCSV2DataFrame(fn='./sample_data/ID1-pose-gt.csv')
+        return TUMCSV2DataFrame(fn=str(SAMPLE_DATA_DIR + '/ID1-pose-gt.csv'))
 
     def test_load_from_CSV(self):
         print('loading...')
@@ -47,7 +66,7 @@ class TUMCSVdata_Test(unittest.TestCase):
                           [3]])
         df = TUMCSV2DataFrame.TPQ_to_DataFrame(t_vec, p_vec, q_vec)
         print(str(df))
-        CSV2DataFrame.save_CSV(data_frame=df, filename='./sample_data/results/any.csv', fmt=CSVFormatPose.TUM)
+        CSV2DataFrame.save_CSV(data_frame=df, filename=str(SAMPLE_DATA_DIR + '/results/any.csv'), fmt=CSVFormatPose.TUM)
 
     def test_subsample_DataFrame(self):
         d = self.load_sample_data_frame()
@@ -57,7 +76,7 @@ class TUMCSVdata_Test(unittest.TestCase):
 
         self.assertTrue(len(df_sub.index) <= num_samples)
 
-        CSV2DataFrame.save_CSV(data_frame=df_sub, filename='./sample_data/results/gt_sub_200.csv',
+        CSV2DataFrame.save_CSV(data_frame=df_sub, filename=str(SAMPLE_DATA_DIR + '/results/gt_sub_200.csv'),
                                fmt=CSVFormatPose.TUM)
 
 

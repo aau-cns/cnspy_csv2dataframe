@@ -17,12 +17,14 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 ########################################################################################################################
+import os
 import unittest
 import time
 from spatial_csv_formats.CSVFormatPose import CSVFormatPose
 from csv2dataframe.CSV2DataFrame import CSV2DataFrame
 from csv2dataframe.PoseWithCov2DataFrame import PoseWithCov2DataFrame
 
+SAMPLE_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sample_data')
 
 class PoseWithCov2DataFrame_Test(unittest.TestCase):
     start_time = None
@@ -35,7 +37,7 @@ class PoseWithCov2DataFrame_Test(unittest.TestCase):
 
     def load_(self):
         print('loading...')
-        fn = './sample_data/ID1-pose-est-cov.csv'
+        fn = str(SAMPLE_DATA_DIR + '/ID1-pose-est-cov.csv')
         obj = PoseWithCov2DataFrame(fn=fn)
         return obj
 
