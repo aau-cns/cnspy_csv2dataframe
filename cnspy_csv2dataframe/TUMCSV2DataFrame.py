@@ -23,8 +23,8 @@ import os
 from sys import version_info
 import math
 import pandas as pandas
-from spatial_csv_formats.CSVFormatPose import CSVFormatPose
-from csv2dataframe.CSV2DataFrame import CSV2DataFrame
+from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 
 
 class TUMCSV2DataFrame(CSV2DataFrame):

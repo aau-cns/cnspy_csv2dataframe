@@ -22,9 +22,9 @@
 import os
 from sys import version_info
 import pandas as pandas
-from spatial_csv_formats.CSVFormatPose import CSVFormatPose
-from csv2dataframe.CSV2DataFrame import CSV2DataFrame
-from numpy_utils.matrix_conversions import *
+from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
+from cnspy_numpy_utils.matrix_conversions import *
 
 
 class PoseWithCov2DataFrame(CSV2DataFrame):

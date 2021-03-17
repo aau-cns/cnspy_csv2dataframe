@@ -23,7 +23,7 @@ import os
 import math
 import pandas as pandas
 import numpy as np
-from spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
 
 
 class CSV2DataFrame:

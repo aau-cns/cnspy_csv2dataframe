@@ -20,9 +20,9 @@
 import os
 import unittest
 import numpy as np
-from csv2dataframe.TUMCSV2DataFrame import TUMCSV2DataFrame
-from csv2dataframe.CSV2DataFrame import CSV2DataFrame
-from spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_csv2dataframe.TUMCSV2DataFrame import TUMCSV2DataFrame
+from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
+from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
 
 SAMPLE_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sample_data')
 

@@ -19,8 +19,8 @@
 ########################################################################################################################
 import os
 import unittest
-from csv2dataframe.CSV2DataFrame import CSV2DataFrame
-from spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
+from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
 
 SAMPLE_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sample_data')
 

@@ -21,8 +21,8 @@
 ########################################################################################################################
 from sys import version_info
 import pandas as pandas
-from spatial_csv_formats.CSVFormatPose import CSVFormatPose
-from csv2dataframe.CSV2DataFrame import CSV2DataFrame
+from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 
 
 class TimestampCSV2DataFrame(CSV2DataFrame):

@@ -1,4 +1,4 @@
-# csv2dataframe Package
+# cnspy_csv2dataframe
 
 
 The class [CSV2DataFrame](CSV2DataFrame.py) is intended to load [CSV-files](https://en.wikipedia.org/wiki/Comma-separated_values) into a `pandas.DataFrame`. The CSV files need to match known formats (defined by their header in the first line) according to those defined in the package [spatial_csv_formats]().
@@ -24,8 +24,8 @@ pip install -e .
 
 * [numpy]()
 * [pandas]()
-* [spatial_csv_formats](https://gitlab.aau.at/aau-cns/py3_pkgs/spatial_csv_formats)
-* [numpy_utils](https://gitlab.aau.at/aau-cns/py3_pkgs/numpy_utils)
+* [cnspy_spatial_csv_formats](https://gitlab.aau.at/aau-cns/py3_pkgs/cnspy_spatial_csv_formats)
+* [cnspy_numpy_utils](https://gitlab.aau.at/aau-cns/py3_pkgs/cnspy_numpy_utils)
 
 
 ## License

@@ -20,9 +20,9 @@
 import os
 import unittest
 import time
-from spatial_csv_formats.CSVFormatPose import CSVFormatPose
-from csv2dataframe.CSV2DataFrame import CSV2DataFrame
-from csv2dataframe.PoseWithCov2DataFrame import PoseWithCov2DataFrame
+from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
+from cnspy_csv2dataframe.PoseWithCov2DataFrame import PoseWithCov2DataFrame
 
 SAMPLE_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sample_data')
 
