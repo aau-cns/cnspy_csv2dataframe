@@ -22,9 +22,10 @@
 import os
 from sys import version_info
 import pandas as pandas
+import numpy as np
 from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
-from cnspy_numpy_utils.matrix_conversions import *
+import cnspy_numpy_utils.matrix_conversions as matrix_conversions
 
 
 class PoseWithCov2DataFrame(CSV2DataFrame):
@@ -55,8 +56,8 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
         # P_vec_p[:, ] = tri_vec_to_mat(cov_vec_p[:, ], n=3)
 
         for i in range(0, l):
-            P_vec_p[i] = tri_vec_to_mat(cov_vec_p[i,], n=3)
-            P_vec_q[i] = tri_vec_to_mat(cov_vec_q[i,], n=3)
+            P_vec_p[i] = matrix_conversions.tri_vec_to_mat(cov_vec_p[i,], n=3)
+            P_vec_q[i] = matrix_conversions.tri_vec_to_mat(cov_vec_q[i,], n=3)
 
         return t_vec, p_vec, q_vec, P_vec_p, P_vec_q
 
@@ -80,8 +81,8 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
         for i in range(0, l):
             # https://stackoverflow.com/questions/17527693/transform-the-upper-lower-triangular-part-of-a-symmetric-matrix-2d-array-into/58806626#58806626
             # https://stackoverflow.com/questions/8905501/extract-upper-or-lower-triangular-part-of-a-numpy-matrix
-            cov_vec_p[i] = mat_to_tri_vec(P_vec_p[i])
-            cov_vec_q[i] = mat_to_tri_vec(P_vec_q[i])
+            cov_vec_p[i] = matrix_conversions.mat_to_tri_vec(P_vec_p[i])
+            cov_vec_q[i] = matrix_conversions.mat_to_tri_vec(P_vec_q[i])
 
         data_frame = pandas.DataFrame(
             {'t': t_vec[:, 0], 'tx': p_vec[:, 0], 'ty': p_vec[:, 1], 'tz': p_vec[:, 2],

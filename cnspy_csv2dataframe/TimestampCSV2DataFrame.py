@@ -39,27 +39,3 @@ class TimestampCSV2DataFrame(CSV2DataFrame):
             return None
 
 
-########################################################################################################################
-#################################################### T E S T ###########################################################
-########################################################################################################################
-import unittest
-
-
-class TimestampCSV2DataFrame_Test(unittest.TestCase):
-    def load_sample_data_frame(self):
-        return TimestampCSV2DataFrame(fn='./sample_data/t_est.csv')
-
-    def test_get_t_vec(self):
-        dut = self.load_sample_data_frame()
-        self.assertTrue(dut.data_loaded)
-        t_vec = dut.get_t_vec()
-        self.assertTrue(len(t_vec) > 0)
-
-    def test_save_to_CSV(self):
-        dut = self.load_sample_data_frame()
-        self.assertTrue(dut.data_loaded)
-        dut.save_to_CSV(fn='./sample_data/results/t_est_copy.csv')
-
-
-if __name__ == "__main__":
-    unittest.main()
