@@ -1,6 +1,6 @@
 numpy
 pandas
-numpy_utils
-spatial_csv_formats
+cnspy_numpy_utils
+cnspy_spatial_csv_formats
 
 
