@@ -21,9 +21,9 @@ setup(
     description='CSV to pandas.Dataframe converter',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://gitlab.aau.at/aau-cns/py3_pkgs/cnspy_csv2dataframe/',
+    url='https://github.com/aau-cns/cnspy_csv2dataframe/',
     project_urls={
-        "Bug Tracker": "https://gitlab.aau.at/aau-cns/py3_pkgs/cnspy_csv2dataframe/issues",
+        "Bug Tracker": "https://github.com/aau-cns/cnspy_csv2dataframe/issues",
     },    
     classifiers=[
         'Development Status :: 4 - Beta',
