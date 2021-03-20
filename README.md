@@ -15,9 +15,13 @@ There a some specialization of  [CSV2DataFrame](./cnspy_csv2dataframe/CSV2DataFr
 
 Install the current code base from GitHub and pip install a link to that cloned copy
 ```
-git clone https://github.com/aau-cns/csv2dataframe.git
-cd csv2dataframe
+git clone https://github.com/aau-cns/cnspy_csv2dataframe.git
+cd cnspy_csv2dataframe
 pip install -e .
+```
+or the [official package](https://pypi.org/project/cnspy-csv2dataframe/) via
+```commandline
+pip install cnspy-csv2dataframe
 ```
 
 ## Dependencies
