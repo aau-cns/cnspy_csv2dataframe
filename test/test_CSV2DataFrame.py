@@ -29,8 +29,8 @@ class CSV2DataFrame_Test(unittest.TestCase):
         d1 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-gt.csv'))
         self.assertTrue(d1.format == CSVFormatPose.TUM)
         self.assertTrue(d1.data_loaded)
-        d2 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-est-cov.csv'), fmt=CSVFormatPose.PoseCov)
-        self.assertTrue(d2.format == CSVFormatPose.PoseCov)
+        d2 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-est-cov.csv'), fmt=CSVFormatPose.PosOrientCov)
+        self.assertTrue(d2.format == CSVFormatPose.PosOrientCov)
         self.assertTrue(d2.data_loaded)
 
         d3 = CSV2DataFrame()

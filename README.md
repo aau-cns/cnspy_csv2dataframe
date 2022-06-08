@@ -6,8 +6,8 @@ The class [CSV2DataFrame](./cnspy_csv2dataframe/CSV2DataFrame.py) is intended to
 In case no format is specified, it tries to match the first line of the CSV-File with known headers from [cnspy_spatial_csv_formats](https://github.com/aau-cns/cnspy_spatial_csv_formats) and loads the data in that format. 
 
 There a some specialization of  [CSV2DataFrame](./cnspy_csv2dataframe/CSV2DataFrame.py) that support different operations on the data:
-* [PoseCovCSV2DataFrame](./cnspy_csv2dataframe/PoseCovCSV2DataFrame.py)
-* [PoseWithCov2DataFrame](./cnspy_csv2dataframe/PoseWithCov2DataFrame.py)
+* [PoseCovCSV2DataFrame](./cnspy_csv2dataframe/PosOrientCovCSV2DataFrame.py)
+* [PoseWithCov2DataFrame](./cnspy_csv2dataframe/PosOrientWithCov2DataFrame.py)
 * [TimestampCSV2DataFrame](./cnspy_csv2dataframe/TimestampCSV2DataFrame.py)
 * [TUMCSV2DataFrame](./cnspy_csv2dataframe/TUMCSV2DataFrame.py)
 

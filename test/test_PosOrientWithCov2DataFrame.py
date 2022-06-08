@@ -22,11 +22,11 @@ import unittest
 import time
 from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
-from cnspy_csv2dataframe.PoseWithCov2DataFrame import PoseWithCov2DataFrame
+from cnspy_csv2dataframe.PosOrientWithCov2DataFrame import PosOrientWithCov2DataFrame
 
 SAMPLE_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sample_data')
 
-class PoseWithCov2DataFrame_Test(unittest.TestCase):
+class PosOrientWithCov2DataFrame_Test(unittest.TestCase):
     start_time = None
 
     def start(self):
@@ -38,14 +38,14 @@ class PoseWithCov2DataFrame_Test(unittest.TestCase):
     def load_(self):
         print('loading...')
         fn = str(SAMPLE_DATA_DIR + '/ID1-pose-est-cov.csv')
-        obj = PoseWithCov2DataFrame(fn=fn)
+        obj = PosOrientWithCov2DataFrame(fn=fn)
         return obj
 
     def test_load_trajectory_from_CSV(self):
         obj = self.load_()
         self.assertTrue(obj.data_loaded)
         self.start()
-        t_vec, p_vec, q_vec, P_vec_p, P_vec_q = PoseWithCov2DataFrame.DataFrame_to_TPQCov(obj.data_frame)
+        t_vec, p_vec, q_vec, P_vec_p, P_vec_q = PosOrientWithCov2DataFrame.DataFrame_to_TPQCov(obj.data_frame)
         self.stop()
 
         print(P_vec_p[1000])

@@ -27,17 +27,20 @@ from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 import cnspy_numpy_utils.matrix_conversions as matrix_conversions
 
-
-class PoseWithCov2DataFrame(CSV2DataFrame):
+# TODOs:
+# - TODO: rename to PosOrientWithCov2DataFrame, as correlation between position and orientation is missing
+# - TODO: extend PosOrientWithCov2DataFrame to PoseWithCov2DataFrame supporting full upper tri 6x6 pose covariance
+class PosOrientWithCov2DataFrame(CSV2DataFrame):
     def __init__(self, fn=None):
-        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormatPose.PoseWithCov)
+        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormatPose.PosOrientWithCov)
 
     @staticmethod
     def DataFrame_to_TPQCov(data_frame):
+        assert (isinstance(data_frame, pandas.DataFrame))
         if version_info[0] < 3:
             t_vec = data_frame.as_matrix(['t'])
             p_vec = data_frame.as_matrix(['tx', 'ty', 'tz'])
-            q_vec = data_frame.as_matrix(['qx', 'qy', 'qz', 'qw'])
+            q_vec = data_frame.as_matrix(['qx', 'qy', 'qz', 'qw'])  # JPL/Shuster
             cov_vec_p = data_frame.as_matrix(['pxx', 'pxy', 'pxz', 'pyy', 'pyz', 'pzz'])
             cov_vec_q = data_frame.as_matrix(['qrr', 'qrp', 'qry', 'qpp', 'qpy', 'qyy'])
         else:
@@ -45,7 +48,7 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
             # from https://stackoverflow.com/questions/60164560/attributeerror-series-object-has-no-attribute-as-matrix-why-is-it-error
             t_vec = data_frame[['t']].to_numpy()
             p_vec = data_frame[['tx', 'ty', 'tz']].to_numpy()
-            q_vec = data_frame[['qx', 'qy', 'qz', 'qw']].to_numpy()
+            q_vec = data_frame[['qx', 'qy', 'qz', 'qw']].to_numpy() # JPL/Shuster
             cov_vec_p = data_frame[['pxx', 'pxy', 'pxz', 'pyy', 'pyz', 'pzz']].to_numpy()
             cov_vec_q = data_frame[['qrr', 'qrp', 'qry', 'qpp', 'qpy', 'qyy']].to_numpy()
 
