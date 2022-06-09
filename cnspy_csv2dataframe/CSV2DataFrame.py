@@ -23,11 +23,11 @@ import os
 import math
 import pandas as pandas
 import numpy as np
-from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 
 
 class CSV2DataFrame:
-    format = CSVFormatPose.none
+    format = CSVSpatialFormatType.none
     data_frame = None
     data_loaded = False
     fn = None
@@ -49,12 +49,12 @@ class CSV2DataFrame:
         if os.path.exists(fn):
             if fmt is not None:
                 fmt_ = fmt
-            elif fmt is None and self.format is not CSVFormatPose.none:
+            elif fmt is None and self.format is not CSVSpatialFormatType.none:
                 fmt_ = self.format
             else:
-                fmt_ = CSVFormatPose.identify_format(fn)
+                fmt_ = CSVSpatialFormatType.identify_format(fn)
 
-            if fmt_ is not CSVFormatPose.none:
+            if fmt_ is not CSVSpatialFormatType.none:
                 self.data_frame = CSV2DataFrame.load_CSV(filename=fn, fmt=fmt_)
                 self.fn = fn
                 self.data_loaded = True
@@ -75,7 +75,7 @@ class CSV2DataFrame:
 
     @staticmethod
     def load_CSV(filename, fmt):
-        data = pandas.read_csv(filename, sep='\s+|\,', comment='#', header=None, names=CSVFormatPose.get_format(fmt),
+        data = pandas.read_csv(filename, sep='\s+|\,', comment='#', header=None, names=CSVSpatialFormatType.get_format(fmt),
                                engine='python')
         return data
 
@@ -86,8 +86,8 @@ class CSV2DataFrame:
             os.makedirs(head)
 
         data_frame.to_csv(filename, sep=',', index=save_index,
-                          header=CSVFormatPose.get_header(fmt),
-                          columns=CSVFormatPose.get_format(fmt))
+                          header=CSVSpatialFormatType.get_header(fmt),
+                          columns=CSVSpatialFormatType.get_format(fmt))
 
     @staticmethod
     def subsample_DataFrame(df, step=None, num_max_points=None, verbose=False):

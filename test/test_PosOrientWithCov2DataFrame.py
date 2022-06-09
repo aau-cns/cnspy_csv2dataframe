@@ -20,7 +20,7 @@
 import os
 import unittest
 import time
-from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 from cnspy_csv2dataframe.PosOrientWithCov2DataFrame import PosOrientWithCov2DataFrame
 

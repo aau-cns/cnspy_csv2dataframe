@@ -22,7 +22,7 @@ import unittest
 import numpy as np
 from cnspy_csv2dataframe.TUMCSV2DataFrame import TUMCSV2DataFrame
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
-from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 
 SAMPLE_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sample_data')
 
@@ -66,7 +66,7 @@ class TUMCSVdata_Test(unittest.TestCase):
                           [3]])
         df = TUMCSV2DataFrame.TPQ_to_DataFrame(t_vec, p_vec, q_vec)
         print(str(df))
-        CSV2DataFrame.save_CSV(data_frame=df, filename=str(SAMPLE_DATA_DIR + '/results/any.csv'), fmt=CSVFormatPose.TUM)
+        CSV2DataFrame.save_CSV(data_frame=df, filename=str(SAMPLE_DATA_DIR + '/results/any.csv'), fmt=CSVSpatialFormatType.TUM)
 
     def test_subsample_DataFrame(self):
         d = self.load_sample_data_frame()
@@ -77,7 +77,7 @@ class TUMCSVdata_Test(unittest.TestCase):
         self.assertTrue(len(df_sub.index) <= num_samples)
 
         CSV2DataFrame.save_CSV(data_frame=df_sub, filename=str(SAMPLE_DATA_DIR + '/results/gt_sub_200.csv'),
-                               fmt=CSVFormatPose.TUM)
+                               fmt=CSVSpatialFormatType.TUM)
 
 
 if __name__ == "__main__":

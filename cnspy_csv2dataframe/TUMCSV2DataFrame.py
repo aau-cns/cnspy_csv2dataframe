@@ -23,13 +23,13 @@ import os
 from sys import version_info
 import math
 import pandas as pandas
-from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 
 
 class TUMCSV2DataFrame(CSV2DataFrame):
     def __init__(self, fn=''):
-        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormatPose.TUM)
+        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVSpatialFormatType.TUM)
 
     @staticmethod
     def DataFrame_to_numpy_dict(df):

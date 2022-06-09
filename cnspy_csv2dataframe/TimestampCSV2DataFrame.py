@@ -21,13 +21,13 @@
 ########################################################################################################################
 from sys import version_info
 import pandas as pandas
-from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 
 
 class TimestampCSV2DataFrame(CSV2DataFrame):
     def __init__(self, fn=''):
-        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormatPose.Timestamp)
+        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVSpatialFormatType.Timestamp)
 
     def get_t_vec(self):
         if self.data_loaded:

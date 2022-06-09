@@ -20,17 +20,17 @@
 import os
 import unittest
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
-from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 
 SAMPLE_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sample_data')
 
 class CSV2DataFrame_Test(unittest.TestCase):
     def test_CTOR(self):
         d1 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-gt.csv'))
-        self.assertTrue(d1.format == CSVFormatPose.TUM)
+        self.assertTrue(d1.format == CSVSpatialFormatType.TUM)
         self.assertTrue(d1.data_loaded)
-        d2 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-est-cov.csv'), fmt=CSVFormatPose.PosOrientCov)
-        self.assertTrue(d2.format == CSVFormatPose.PosOrientCov)
+        d2 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-est-cov.csv'), fmt=CSVSpatialFormatType.PosOrientCov)
+        self.assertTrue(d2.format == CSVSpatialFormatType.PosOrientCov)
         self.assertTrue(d2.data_loaded)
 
         d3 = CSV2DataFrame()

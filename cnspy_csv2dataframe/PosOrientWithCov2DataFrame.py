@@ -23,7 +23,7 @@ import os
 from sys import version_info
 import pandas as pandas
 import numpy as np
-from cnspy_spatial_csv_formats.CSVFormatPose import CSVFormatPose
+from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 import cnspy_numpy_utils.matrix_conversions as matrix_conversions
 
@@ -32,7 +32,7 @@ import cnspy_numpy_utils.matrix_conversions as matrix_conversions
 # - TODO: extend PosOrientWithCov2DataFrame to PoseWithCov2DataFrame supporting full upper tri 6x6 pose covariance
 class PosOrientWithCov2DataFrame(CSV2DataFrame):
     def __init__(self, fn=None):
-        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVFormatPose.PosOrientWithCov)
+        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVSpatialFormatType.PosOrientWithCov)
 
     @staticmethod
     def DataFrame_to_TPQCov(data_frame):
