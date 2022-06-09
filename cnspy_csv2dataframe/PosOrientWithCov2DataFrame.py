@@ -32,7 +32,8 @@ import cnspy_numpy_utils.matrix_conversions as matrix_conversions
 # - TODO: extend PosOrientWithCov2DataFrame to PoseWithCov2DataFrame supporting full upper tri 6x6 pose covariance
 class PosOrientWithCov2DataFrame(CSV2DataFrame):
     def __init__(self, fn=None):
-        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVSpatialFormatType.PosOrientWithCov)
+        # identify the covariance format via fmt=None!
+        CSV2DataFrame.__init__(self, filename=fn, fmt=None)
 
     @staticmethod
     def DataFrame_to_TPQCov(data_frame):

@@ -23,11 +23,12 @@ import os
 import math
 import pandas as pandas
 import numpy as np
+from cnspy_spatial_csv_formats.CSVSpatialFormat import CSVSpatialFormat
 from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 
 
 class CSV2DataFrame:
-    format = CSVSpatialFormatType.none
+    format = CSVSpatialFormat()
     data_frame = None
     data_loaded = False
     fn = None
@@ -36,7 +37,7 @@ class CSV2DataFrame:
         if filename is None:
             pass  # Do nothing.. data can be loaded later on!
         else:
-            self.load_from_CSV(fn=filename, fmt=fmt)
+            self.load_from_CSV(fn=filename, fmt_type=fmt)
 
     def subsample(self, step=None, num_max_points=None):
         if self.data_loaded:
@@ -45,16 +46,37 @@ class CSV2DataFrame:
         else:
             print("CSV2DataFrame: data was not loaded!")
 
-    def load_from_CSV(self, fn, fmt=None):
-        if os.path.exists(fn):
-            if fmt is not None:
-                fmt_ = fmt
-            elif fmt is None and self.format is not CSVSpatialFormatType.none:
-                fmt_ = self.format
-            else:
-                fmt_ = CSVSpatialFormatType.identify_format(fn)
+    def load_from_CSV(self, fn, fmt_type=None):
+        """
 
-            if fmt_ is not CSVSpatialFormatType.none:
+        Parameters
+        ----------
+        fn
+        fmt_type: allows to load a CSV is a manually specified format; if not specified the format is automatically
+        identified.
+
+        Returns: True/False
+        -------
+
+        """
+        if os.path.exists(fn):
+            if fmt_type is not None:
+                assert(isinstance(fmt_type, CSVSpatialFormatType) or isinstance(fmt_type, CSVSpatialFormat))
+
+                if isinstance(fmt_type, CSVSpatialFormatType):
+                    fmt_ = CSVSpatialFormat(fmt_type=fmt_type)
+                elif isinstance(fmt_type, CSVSpatialFormat):
+                    fmt_ = fmt_type
+            else:
+                # use the already specified format
+                fmt_ = self.format
+
+            # if the format type is not known (none) then try to identify it:
+            if fmt_.type is CSVSpatialFormatType.none:
+                fmt_ = CSVSpatialFormat.identify_format(fn)
+
+            # if the format is still not known it cannot be loaded
+            if fmt_.type is not CSVSpatialFormatType.none:
                 self.data_frame = CSV2DataFrame.load_CSV(filename=fn, fmt=fmt_)
                 self.fn = fn
                 self.data_loaded = True
@@ -62,10 +84,16 @@ class CSV2DataFrame:
                 return True
         else:
             print("CSV2DataFrame.load_from_CSV(): file does not exist: {0}".format(fn))
+
+        # default assignment
+        self.data_frame = None
+        self.fn = None
+        self.data_loaded = False
+        self.format = CSVSpatialFormat()
         return False
 
     def save_to_CSV(self, fn, fmt=None):
-        if fmt is None:
+        if fmt is None or not isinstance(fmt, CSVSpatialFormat):
             fmt_ = self.format
 
         if self.data_loaded:
@@ -75,8 +103,15 @@ class CSV2DataFrame:
 
     @staticmethod
     def load_CSV(filename, fmt):
-        data = pandas.read_csv(filename, sep='\s+|\,', comment='#', header=None, names=CSVSpatialFormatType.get_format(fmt),
-                               engine='python')
+        if isinstance(fmt, CSVSpatialFormatType):
+            data = pandas.read_csv(filename, sep='\s+|\,', comment='#', header=None,
+                                   names=CSVSpatialFormatType.get_format(fmt),
+                                   engine='python')
+        elif isinstance(fmt, CSVSpatialFormat):
+            data = pandas.read_csv(filename, sep='\s+|\,', comment='#', header=None,
+                                   names=fmt.get_format(),
+                                   engine='python')
+
         return data
 
     @staticmethod
@@ -85,9 +120,14 @@ class CSV2DataFrame:
         if not os.path.exists(head):
             os.makedirs(head)
 
-        data_frame.to_csv(filename, sep=',', index=save_index,
-                          header=CSVSpatialFormatType.get_header(fmt),
-                          columns=CSVSpatialFormatType.get_format(fmt))
+        if isinstance(fmt, CSVSpatialFormatType):
+            data_frame.to_csv(filename, sep=',', index=save_index,
+                              header=CSVSpatialFormatType.get_header(fmt),
+                              columns=CSVSpatialFormatType.get_format(fmt))
+        elif isinstance(fmt, CSVSpatialFormat):
+            data_frame.to_csv(filename, sep=',', index=save_index,
+                              header=fmt.get_header(),
+                              columns=fmt.get_format())
 
     @staticmethod
     def subsample_DataFrame(df, step=None, num_max_points=None, verbose=False):
