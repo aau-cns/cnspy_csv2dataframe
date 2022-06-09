@@ -24,7 +24,7 @@ from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 from cnspy_csv2dataframe.PosOrientWithCov2DataFrame import PosOrientWithCov2DataFrame
 from cnspy_spatial_csv_formats.EstimationErrorType import EstimationErrorType
-from cnspy_spatial_csv_formats.RotationErrorRepresentationType import RotationErrorRepresentationType
+from cnspy_spatial_csv_formats.ErrorRepresentationType import ErrorRepresentationType
 
 SAMPLE_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sample_data')
 
@@ -48,7 +48,7 @@ class PosOrientWithCov2DataFrame_Test(unittest.TestCase):
         self.assertTrue(obj.data_loaded)
         self.assertTrue(obj.format.type == CSVSpatialFormatType.PosOrientWithCov)
         self.assertTrue(obj.format.estimation_error_type == EstimationErrorType.none)
-        self.assertTrue(obj.format.rotation_error_representation == RotationErrorRepresentationType.none)
+        self.assertTrue(obj.format.rotation_error_representation == ErrorRepresentationType.none)
 
         self.start()
         t_vec, p_vec, q_vec, P_vec_p, P_vec_q = PosOrientWithCov2DataFrame.DataFrame_to_TPQCov(obj.data_frame)
@@ -66,7 +66,7 @@ class PosOrientWithCov2DataFrame_Test(unittest.TestCase):
         self.assertTrue(df.data_loaded)
         self.assertTrue(df.format.type == CSVSpatialFormatType.PosOrientWithCov)
         self.assertTrue(df.format.estimation_error_type == EstimationErrorType.type1)
-        self.assertTrue(df.format.rotation_error_representation == RotationErrorRepresentationType.R_small_theta)
+        self.assertTrue(df.format.rotation_error_representation == ErrorRepresentationType.R_small_theta)
         self.start()
         t_vec, p_vec, q_vec, P_vec_p, P_vec_q = PosOrientWithCov2DataFrame.DataFrame_to_TPQCov(df.data_frame)
         self.stop()

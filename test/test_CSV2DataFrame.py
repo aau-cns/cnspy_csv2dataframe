@@ -22,7 +22,7 @@ import unittest
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 from cnspy_spatial_csv_formats.EstimationErrorType import EstimationErrorType
-from cnspy_spatial_csv_formats.RotationErrorRepresentationType import RotationErrorRepresentationType
+from cnspy_spatial_csv_formats.ErrorRepresentationType import ErrorRepresentationType
 
 SAMPLE_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sample_data')
 
@@ -47,14 +47,14 @@ class CSV2DataFrame_Test(unittest.TestCase):
         self.assertTrue(d4.data_loaded)
         self.assertTrue(d4.format.type == CSVSpatialFormatType.PosOrientWithCov)
         self.assertTrue(d4.format.estimation_error_type == EstimationErrorType.type1)
-        self.assertTrue(d4.format.rotation_error_representation == RotationErrorRepresentationType.R_small_theta)
+        self.assertTrue(d4.format.rotation_error_representation == ErrorRepresentationType.R_small_theta)
 
         d5 = CSV2DataFrame()
         d5.load_from_CSV(fn=str(SAMPLE_DATA_DIR + '/ID1-pose-est-cov-type2-thetaq.csv'))
         self.assertTrue(d5.data_loaded)
         self.assertTrue(d5.format.type == CSVSpatialFormatType.PosOrientWithCov)
         self.assertTrue(d5.format.estimation_error_type == EstimationErrorType.type2)
-        self.assertTrue(d5.format.rotation_error_representation == RotationErrorRepresentationType.q_small_theta)
+        self.assertTrue(d5.format.rotation_error_representation == ErrorRepresentationType.q_small_theta)
 
     def test_wrong_format_type(self):
         d2 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-est-cov.csv'), fmt=CSVSpatialFormatType.PosOrientCov)
