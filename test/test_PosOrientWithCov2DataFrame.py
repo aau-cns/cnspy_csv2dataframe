@@ -39,7 +39,7 @@ class PosOrientWithCov2DataFrame_Test(unittest.TestCase):
 
     def load_(self):
         print('loading...')
-        fn = str(SAMPLE_DATA_DIR + '/ID1-pose-est-cov.csv')
+        fn = str(SAMPLE_DATA_DIR + '/ID1-pose-est-posorient-cov.csv')
         obj = PosOrientWithCov2DataFrame(fn=fn)
         return obj
 
@@ -61,7 +61,7 @@ class PosOrientWithCov2DataFrame_Test(unittest.TestCase):
 
     def test_load_trajectory_with_est_type_from_CSV(self):
         print('loading...')
-        fn = str(SAMPLE_DATA_DIR + '/ID1-pose-est-cov-type1-thetaR.csv')
+        fn = str(SAMPLE_DATA_DIR + '/ID1-pose-est-posorient-cov-type1-thetaR.csv')
         df = PosOrientWithCov2DataFrame(fn=fn)
         self.assertTrue(df.data_loaded)
         self.assertTrue(df.format.type == CSVSpatialFormatType.PosOrientWithCov)

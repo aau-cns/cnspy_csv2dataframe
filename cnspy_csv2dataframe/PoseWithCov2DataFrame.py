@@ -42,17 +42,17 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
             t_vec = data_frame.as_matrix(['t'])
             p_vec = data_frame.as_matrix(['tx', 'ty', 'tz'])
             q_vec = data_frame.as_matrix(['qx', 'qy', 'qz', 'qw'])  # JPL/Shuster
-            cov_vec_T = data_frame.as_matrix(['Txx', 'Txy', 'Txz', 'Tyy', 'Tyz', 'Tzz', 'Taa', 'Tab', 'Tac', 'Tbb',
-                                              'Tbc', 'Tcc', 'Txa', 'Txb', 'Txc', 'Tya', 'Tyb', 'Tyc', 'Tza', 'Tzb',
-                                              'Tzc'])
+            cov_vec_T = data_frame.as_matrix(['Txx', 'Txy', 'Txz', 'Txa', 'Txb', 'Txc', 'Tyy', 'Tyz', 'Tya', 'Tyb',
+                                              'Tyc', 'Tzz', 'Tza', 'Tzb', 'Tzc', 'Taa', 'Tab', 'Tac', 'Tbb', 'Tbc',
+                                              'Tcc'])
         else:
             # FIX(scm): for newer versions as_matrix is deprecated, using to_numpy instead
             # from https://stackoverflow.com/questions/60164560/attributeerror-series-object-has-no-attribute-as-matrix-why-is-it-error
             t_vec = data_frame[['t']].to_numpy()
             p_vec = data_frame[['tx', 'ty', 'tz']].to_numpy()
             q_vec = data_frame[['qx', 'qy', 'qz', 'qw']].to_numpy() # JPL/Shuster
-            cov_vec_T = data_frame[['Txx', 'Txy', 'Txz', 'Tyy', 'Tyz', 'Tzz', 'Taa', 'Tab', 'Tac', 'Tbb', 'Tbc', 'Tcc',
-                                    'Txa', 'Txb', 'Txc', 'Tya', 'Tyb', 'Tyc', 'Tza', 'Tzb', 'Tzc']].to_numpy()
+            cov_vec_T = data_frame[['Txx', 'Txy', 'Txz', 'Txa', 'Txb', 'Txc', 'Tyy', 'Tyz', 'Tya', 'Tyb', 'Tyc', 'Tzz',
+                                    'Tza', 'Tzb', 'Tzc', 'Taa', 'Tab', 'Tac', 'Tbb', 'Tbc', 'Tcc']].to_numpy()
             # TODO: IMPORTANT -> reassign the indices to match tri_vec_to_mat!
 
         l = t_vec.shape[0]
@@ -89,16 +89,13 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
             {'t': t_vec[:, 0], 'tx': p_vec[:, 0], 'ty': p_vec[:, 1], 'tz': p_vec[:, 2],
              'qx': q_vec[:, 0], 'qy': q_vec[:, 1], 'qz': q_vec[:, 2], 'qw': q_vec[:, 3],
              # TODO: IMPORTANT -> reassign the indices to match tri_vec_to_mat!
-             # covariance of position t
-             'Txx': P_vec[:, 0], 'Txy': P_vec[:, 1], 'Txz': P_vec[:, 2],
-             'Tyy': P_vec[:, 3], 'Tyz': P_vec[:, 4], 'Tzz': P_vec[:, 5],
-             # covariance of orientation q
-             'Taa': P_vec[:, 6], 'Tab': P_vec[:, 7], 'Tac': P_vec[:, 8],
-             'Tbb': P_vec[:, 9], 'Tbc': P_vec[:, 10], 'Tcc': P_vec[:, 11],
-             # cross-covariance between position and orientation
-             'Txa': P_vec[:, 12], 'Txb': P_vec[:, 13], 'Txc': P_vec[:, 14],
-             'Tya': P_vec[:, 15], 'Tyb': P_vec[:, 16], 'Tyc': P_vec[:, 17],
-             'Tza': P_vec[:, 18], 'Tzb': P_vec[:, 19], 'Tzc': P_vec[:, 20],
+             'Txx': cov_vec[:, 0], 'Txy': cov_vec[:, 1], 'Txz': cov_vec[:, 2],
+             'Txa': cov_vec[:, 3], 'Txb': cov_vec[:, 4], 'Txc': cov_vec[:, 5],
+             'Tyy': cov_vec[:, 6], 'Tyz': cov_vec[:, 7], 'Tya': cov_vec[:, 8],
+             'Tyb': cov_vec[:, 9], 'Tyc': cov_vec[:, 10], 'Tzz': cov_vec[:, 11],
+             'Tza': cov_vec[:, 12], 'Tzb': cov_vec[:, 13], 'Tzc': cov_vec[:, 14],
+             'Taa': cov_vec[:, 15], 'Tab': cov_vec[:, 16], 'Tac': cov_vec[:, 17],
+             'Tbb': cov_vec[:, 18], 'Tbc': cov_vec[:, 19], 'Tcc': cov_vec[:, 20],
              })
         return data_frame
 
