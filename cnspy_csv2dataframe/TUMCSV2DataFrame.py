@@ -23,6 +23,7 @@ import os
 from sys import version_info
 import math
 import pandas as pandas
+import numpy as np
 from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 

@@ -27,9 +27,7 @@ from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 import cnspy_numpy_utils.matrix_conversions as matrix_conversions
 
-# TODOs:
-# - TODO: rename to PosOrientWithCov2DataFrame, as correlation between position and orientation is missing
-# - TODO: extend PosOrientWithCov2DataFrame to PoseWithCov2DataFrame supporting full upper tri 6x6 pose covariance
+
 class PosOrientWithCov2DataFrame(CSV2DataFrame):
     def __init__(self, fn=None):
         # identify the covariance format via fmt=None!

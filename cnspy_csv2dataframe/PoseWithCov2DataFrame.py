@@ -27,9 +27,7 @@ from cnspy_spatial_csv_formats.CSVSpatialFormatType import CSVSpatialFormatType
 from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 import cnspy_numpy_utils.matrix_conversions as matrix_conversions
 
-# TODOs:
-# - TODO: rename to PosOrientWithCov2DataFrame, as correlation between position and orientation is missing
-# - TODO: extend PosOrientWithCov2DataFrame to PoseWithCov2DataFrame supporting full upper tri 6x6 pose covariance
+
 class PoseWithCov2DataFrame(CSV2DataFrame):
     def __init__(self, fn=None):
         # identify the covariance format via fmt=None!
@@ -53,7 +51,6 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
             q_vec = data_frame[['qx', 'qy', 'qz', 'qw']].to_numpy() # JPL/Shuster
             cov_vec_T = data_frame[['Txx', 'Txy', 'Txz', 'Txa', 'Txb', 'Txc', 'Tyy', 'Tyz', 'Tya', 'Tyb', 'Tyc', 'Tzz',
                                     'Tza', 'Tzb', 'Tzc', 'Taa', 'Tab', 'Tac', 'Tbb', 'Tbc', 'Tcc']].to_numpy()
-            # TODO: IMPORTANT -> reassign the indices to match tri_vec_to_mat!
 
         l = t_vec.shape[0]
 
@@ -88,7 +85,6 @@ class PoseWithCov2DataFrame(CSV2DataFrame):
         data_frame = pandas.DataFrame(
             {'t': t_vec[:, 0], 'tx': p_vec[:, 0], 'ty': p_vec[:, 1], 'tz': p_vec[:, 2],
              'qx': q_vec[:, 0], 'qy': q_vec[:, 1], 'qz': q_vec[:, 2], 'qw': q_vec[:, 3],
-             # TODO: IMPORTANT -> reassign the indices to match tri_vec_to_mat!
              'Txx': cov_vec[:, 0], 'Txy': cov_vec[:, 1], 'Txz': cov_vec[:, 2],
              'Txa': cov_vec[:, 3], 'Txb': cov_vec[:, 4], 'Txc': cov_vec[:, 5],
              'Tyy': cov_vec[:, 6], 'Tyz': cov_vec[:, 7], 'Tya': cov_vec[:, 8],
