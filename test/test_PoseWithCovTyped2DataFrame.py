@@ -48,7 +48,7 @@ class PoseWithCov2DataFrame_Test(unittest.TestCase):
         self.assertTrue(obj.format == CSVSpatialFormatType.PoseWithCovTyped)
 
         self.start()
-        t_vec, p_vec, q_vec, P_vec_T, est_err_vec, err_rep_vec = PoseWithCovTyped2DataFrame.DataFrame_to_TPQCov(obj.data_frame)
+        t_vec, p_vec, q_vec, P_vec_T, est_err_vec, err_rep_vec = PoseWithCovTyped2DataFrame.from_DataFrame(obj.data_frame)
         self.stop()
 
         print('est_err: ' + str(est_err_vec[1000]))
@@ -58,7 +58,7 @@ class PoseWithCov2DataFrame_Test(unittest.TestCase):
         print('q: ' + str(q_vec[1000]))
 
 
-        df = PoseWithCovTyped2DataFrame.TPQCov_to_DataFrame(t_vec, p_vec, q_vec, P_vec_T, est_err_vec, err_rep_vec)
+        df = PoseWithCovTyped2DataFrame.to_DataFrame(t_vec, p_vec, q_vec, P_vec_T, est_err_vec, err_rep_vec)
         print('keys: ' + str(df.keys().values))
 
 if __name__ == "__main__":

@@ -47,7 +47,7 @@ class TUMCSV2DataFrame(CSV2DataFrame):
         return np_dict
 
     @staticmethod
-    def DataFrame_to_TPQ(data_frame):
+    def from_DataFrame(data_frame):
         if version_info[0] < 3:
             t_vec = data_frame.as_matrix(['t'])
             p_vec = data_frame.as_matrix(['tx', 'ty', 'tz'])
@@ -60,7 +60,7 @@ class TUMCSV2DataFrame(CSV2DataFrame):
         return t_vec, p_vec, q_vec
 
     @staticmethod
-    def TPQ_to_DataFrame(t_vec, p_vec, q_vec):
+    def to_DataFrame(t_vec, p_vec, q_vec):
         if t_vec.ndim == 2:
             t_rows, t_cols = t_vec.shape
         else:

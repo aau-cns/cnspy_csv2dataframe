@@ -36,10 +36,10 @@ class PosOrientWithCov2DataFrame(CSV2DataFrame):
         CSV2DataFrame.__init__(self, fn=fn, fmt=None)
 
     @staticmethod
-    def DataFrame_to_TPQCov(data_frame):
+    def from_DataFrame(data_frame):
         assert (isinstance(data_frame, pandas.DataFrame))
 
-        t_vec, p_vec, q_vec = TUMCSV2DataFrame.DataFrame_to_TPQ(data_frame)
+        t_vec, p_vec, q_vec = TUMCSV2DataFrame.from_DataFrame(data_frame)
 
         if version_info[0] < 3:
             cov_vec_p = data_frame.as_matrix(['pxx', 'pxy', 'pxz', 'pyy', 'pyz', 'pzz'])
@@ -63,14 +63,14 @@ class PosOrientWithCov2DataFrame(CSV2DataFrame):
         return t_vec, p_vec, q_vec, P_vec_p, P_vec_q
 
     @staticmethod
-    def TPQCov_to_DataFrame(t_vec, p_vec, q_vec, P_vec_p, P_vec_q):
+    def to_DataFrame(t_vec, p_vec, q_vec, P_vec_p, P_vec_q):
         t_rows, t_cols = t_vec.shape  # does not work in Python 3
         P_p_len, P_p_rows, P_p_cols = P_vec_p.shape
         assert (P_p_len == t_rows)
         assert (P_p_rows == 3 and P_p_cols == 3)
         assert (P_vec_p.shape == P_vec_q.shape)
 
-        df1 = TUMCSV2DataFrame.TPQ_to_DataFrame(t_vec, p_vec, q_vec)
+        df1 = TUMCSV2DataFrame.to_DataFrame(t_vec, p_vec, q_vec)
 
         l = t_rows
         cov_vec_p = np.zeros((l, 6))

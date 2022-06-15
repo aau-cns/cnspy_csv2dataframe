@@ -46,7 +46,7 @@ class TUMCSVdata_Test(unittest.TestCase):
 
     def test_data_to_tqp(self):
         d = self.load_sample_data_frame()
-        t_vec, p_vec, q_vec = TUMCSV2DataFrame.DataFrame_to_TPQ(d.data_frame)
+        t_vec, p_vec, q_vec = TUMCSV2DataFrame.from_DataFrame(d.data_frame)
 
         self.assertTrue(len(t_vec) > 0)
         self.assertTrue(len(t_vec) == len(p_vec))
@@ -64,7 +64,7 @@ class TUMCSVdata_Test(unittest.TestCase):
                           [1],
                           [2],
                           [3]])
-        df = TUMCSV2DataFrame.TPQ_to_DataFrame(t_vec, p_vec, q_vec)
+        df = TUMCSV2DataFrame.to_DataFrame(t_vec, p_vec, q_vec)
         print(str(df))
         CSV2DataFrame.save_CSV(data_frame=df, filename=str(SAMPLE_DATA_DIR + '/results/any.csv'), fmt=CSVSpatialFormatType.TUM)
 

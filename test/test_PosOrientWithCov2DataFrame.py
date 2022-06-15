@@ -49,7 +49,7 @@ class PosOrientWithCov2DataFrame_Test(unittest.TestCase):
         self.assertTrue(obj.format == CSVSpatialFormatType.PosOrientWithCovTyped)
 
         self.start()
-        t_vec, p_vec, q_vec, P_vec_p, P_vec_q = PosOrientWithCov2DataFrame.DataFrame_to_TPQCov(obj.data_frame)
+        t_vec, p_vec, q_vec, P_vec_p, P_vec_q = PosOrientWithCov2DataFrame.from_DataFrame(obj.data_frame)
         self.stop()
 
         print('P_p: ' + str(P_vec_p[1000]))
@@ -57,7 +57,7 @@ class PosOrientWithCov2DataFrame_Test(unittest.TestCase):
         print('p: ' + str(p_vec[1000]))
         print('q: ' + str(q_vec[1000]))
 
-        df = PosOrientWithCov2DataFrame.TPQCov_to_DataFrame(t_vec, p_vec, q_vec, P_vec_p, P_vec_q)
+        df = PosOrientWithCov2DataFrame.to_DataFrame(t_vec, p_vec, q_vec, P_vec_p, P_vec_q)
         print('keys: ' + str(df.keys().values))
 
     def test_load_trajectory_with_est_type_from_CSV(self):
@@ -67,7 +67,7 @@ class PosOrientWithCov2DataFrame_Test(unittest.TestCase):
         self.assertTrue(df.data_loaded)
         self.assertTrue(df.format == CSVSpatialFormatType.PosOrientWithCovTyped)
         self.start()
-        t_vec, p_vec, q_vec, P_vec_p, P_vec_q = PosOrientWithCov2DataFrame.DataFrame_to_TPQCov(df.data_frame)
+        t_vec, p_vec, q_vec, P_vec_p, P_vec_q = PosOrientWithCov2DataFrame.from_DataFrame(df.data_frame)
         self.stop()
 
         print('P_p: ' + str(P_vec_p[1]))

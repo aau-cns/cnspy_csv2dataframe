@@ -50,7 +50,7 @@ class PosOrientWithCovTyped2DataFrame_Test(unittest.TestCase):
 
         self.start()
         t_vec, p_vec, q_vec, P_vec_p, P_vec_q, est_err_vec, err_rep_vec = \
-            PosOrientWithCovTyped2DataFrame.DataFrame_to_TPQCov(obj.data_frame)
+            PosOrientWithCovTyped2DataFrame.from_DataFrame(obj.data_frame)
         self.stop()
 
         print('est_err: ' + str(est_err_vec[1000]))
@@ -60,7 +60,7 @@ class PosOrientWithCovTyped2DataFrame_Test(unittest.TestCase):
         print('p: ' + str(p_vec[1000]))
         print('q: ' + str(q_vec[1000]))
 
-        df = PosOrientWithCovTyped2DataFrame.TPQCov_to_DataFrame(t_vec, p_vec, q_vec, P_vec_p, P_vec_q, est_err_vec, err_rep_vec)
+        df = PosOrientWithCovTyped2DataFrame.to_DataFrame(t_vec, p_vec, q_vec, P_vec_p, P_vec_q, est_err_vec, err_rep_vec)
         print('keys: ' + str(df.keys().values))
 
 

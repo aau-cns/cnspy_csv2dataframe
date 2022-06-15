@@ -37,10 +37,10 @@ class PoseWithCovTyped2DataFrame(CSV2DataFrame):
         CSV2DataFrame.__init__(self, fn=fn, fmt=None)
 
     @staticmethod
-    def DataFrame_to_TPQCov(data_frame):
+    def from_DataFrame(data_frame):
         assert (isinstance(data_frame, pandas.DataFrame))
 
-        t_vec, p_vec, q_vec, P_vec_T = PoseWithCov2DataFrame.DataFrame_to_TPQCov(data_frame)
+        t_vec, p_vec, q_vec, P_vec_T = PoseWithCov2DataFrame.from_DataFrame(data_frame)
         if version_info[0] < 3:
             est_err_type_vec = data_frame.as_matrix(['est_err_type'])
             err_rep_vec = data_frame.as_matrix(['err_representation'])
@@ -51,12 +51,12 @@ class PoseWithCovTyped2DataFrame(CSV2DataFrame):
         return t_vec, p_vec, q_vec, P_vec_T, est_err_type_vec, err_rep_vec
 
     @staticmethod
-    def TPQCov_to_DataFrame(t_vec, p_vec, q_vec, P_vec, est_err_type_vec, err_rep_vec):
+    def to_DataFrame(t_vec, p_vec, q_vec, P_vec, est_err_type_vec, err_rep_vec):
         t_rows, t_cols = t_vec.shape  # does not work in Python 3
         assert (len(est_err_type_vec) == t_rows)
         assert (len(err_rep_vec) == t_rows)
 
-        df1 = PoseWithCov2DataFrame.TPQCov_to_DataFrame(t_vec, p_vec, q_vec, P_vec)
+        df1 = PoseWithCov2DataFrame.to_DataFrame(t_vec, p_vec, q_vec, P_vec)
         df2 = pandas.DataFrame(
             {'est_err_type': est_err_type_vec.tolist(), 'err_representation': err_rep_vec.tolist()})
         return pandas.concat([df1, df2], axis=1)
