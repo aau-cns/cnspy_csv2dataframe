@@ -68,6 +68,12 @@ class CSV2DataFrame:
             print("CSV2DataFrame: data was not loaded!")
 
     @staticmethod
+    def identify_format(dataframe):
+        if isinstance(dataframe, pandas.DataFrame):
+            return CSVSpatialFormatType.header_to_format_type(','.join(dataframe.keys().values))
+        return CSVSpatialFormatType.none
+
+    @staticmethod
     def load_CSV(filename, fmt=None):
         if isinstance(fmt, CSVSpatialFormatType) and fmt is not CSVSpatialFormatType.none:
             data = pandas.read_csv(filename, sep='\s+|\,', comment='#', header=None,
@@ -76,7 +82,7 @@ class CSV2DataFrame:
         else:
             data = pandas.read_csv(filename, sep='\s+|\,', comment='#',
                                    engine='python')
-            fmt = CSVSpatialFormatType.header_to_format_type(','.join(data.keys().values))
+            fmt = CSV2DataFrame.identify_format(data)
         return data, fmt
 
     @staticmethod
