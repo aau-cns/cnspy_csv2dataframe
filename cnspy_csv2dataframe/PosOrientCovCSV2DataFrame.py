@@ -27,4 +27,4 @@ from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 class PosOrientCovCSV2DataFrame(CSV2DataFrame):
     def __init__(self, fn=None):
         # identify the covariance format via fmt=None!
-        CSV2DataFrame.__init__(self, filename=fn, fmt=None)
+        CSV2DataFrame.__init__(self, fn=fn, fmt=None)

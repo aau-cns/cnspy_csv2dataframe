@@ -27,7 +27,7 @@ from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 
 class TimestampCSV2DataFrame(CSV2DataFrame):
     def __init__(self, fn=''):
-        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVSpatialFormatType.Timestamp)
+        CSV2DataFrame.__init__(self, fn=fn, fmt=CSVSpatialFormatType.Timestamp)
 
     def get_t_vec(self):
         if self.data_loaded:

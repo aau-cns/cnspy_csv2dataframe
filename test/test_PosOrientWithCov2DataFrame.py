@@ -46,35 +46,34 @@ class PosOrientWithCov2DataFrame_Test(unittest.TestCase):
     def test_load_trajectory_from_CSV(self):
         obj = self.load_()
         self.assertTrue(obj.data_loaded)
-        self.assertTrue(obj.format.type == CSVSpatialFormatType.PosOrientWithCov)
-        self.assertTrue(obj.format.estimation_error_type == EstimationErrorType.none)
-        self.assertTrue(obj.format.rotation_error_representation == ErrorRepresentationType.none)
+        self.assertTrue(obj.format == CSVSpatialFormatType.PosOrientWithCovTyped)
 
         self.start()
         t_vec, p_vec, q_vec, P_vec_p, P_vec_q = PosOrientWithCov2DataFrame.DataFrame_to_TPQCov(obj.data_frame)
         self.stop()
 
-        print(P_vec_p[1000])
-        print(P_vec_q[1000])
-        print(p_vec[1000])
-        print(q_vec[1000])
+        print('P_p: ' + str(P_vec_p[1000]))
+        print('P_q: ' + str(P_vec_q[1000]))
+        print('p: ' + str(p_vec[1000]))
+        print('q: ' + str(q_vec[1000]))
+
+        df = PosOrientWithCov2DataFrame.TPQCov_to_DataFrame(t_vec, p_vec, q_vec, P_vec_p, P_vec_q)
+        print('keys: ' + str(df.keys().values))
 
     def test_load_trajectory_with_est_type_from_CSV(self):
         print('loading...')
         fn = str(SAMPLE_DATA_DIR + '/ID1-pose-est-posorient-cov-type1-thetaR.csv')
         df = PosOrientWithCov2DataFrame(fn=fn)
         self.assertTrue(df.data_loaded)
-        self.assertTrue(df.format.type == CSVSpatialFormatType.PosOrientWithCov)
-        self.assertTrue(df.format.estimation_error_type == EstimationErrorType.type1)
-        self.assertTrue(df.format.rotation_error_representation == ErrorRepresentationType.R_small_theta)
+        self.assertTrue(df.format == CSVSpatialFormatType.PosOrientWithCovTyped)
         self.start()
         t_vec, p_vec, q_vec, P_vec_p, P_vec_q = PosOrientWithCov2DataFrame.DataFrame_to_TPQCov(df.data_frame)
         self.stop()
 
-        print(P_vec_p[1])
-        print(P_vec_q[1])
-        print(p_vec[1])
-        print(q_vec[1])
+        print('P_p: ' + str(P_vec_p[1]))
+        print('P_q: ' + str(P_vec_q[1]))
+        print('p: ' + str(p_vec[1]))
+        print('q: ' + str(q_vec[1]))
 
 if __name__ == "__main__":
     unittest.main()

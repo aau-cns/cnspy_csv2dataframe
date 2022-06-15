@@ -30,7 +30,7 @@ from cnspy_csv2dataframe.CSV2DataFrame import CSV2DataFrame
 
 class TUMCSV2DataFrame(CSV2DataFrame):
     def __init__(self, fn=''):
-        CSV2DataFrame.__init__(self, filename=fn, fmt=CSVSpatialFormatType.TUM)
+        CSV2DataFrame.__init__(self, fn=fn, fmt=CSVSpatialFormatType.TUM)
 
     @staticmethod
     def DataFrame_to_numpy_dict(df):

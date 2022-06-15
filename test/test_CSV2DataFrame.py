@@ -28,38 +28,41 @@ SAMPLE_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'samp
 
 class CSV2DataFrame_Test(unittest.TestCase):
     def test_CTOR(self):
-        d1 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-gt.csv'))
-        self.assertTrue(d1.format.type == CSVSpatialFormatType.TUM)
-        self.assertTrue(d1.data_loaded)
-        d2 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-est-posorient-cov.csv'), fmt=CSVSpatialFormatType.PosOrientWithCov)
-        self.assertTrue(d2.format.type == CSVSpatialFormatType.PosOrientWithCov)
-        self.assertTrue(d2.data_loaded)
+        d0 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-gt.csv'))
+        self.assertFalse(d0.format == CSVSpatialFormatType.TUM)
+        self.assertTrue(d0.format == CSVSpatialFormatType.none)
+        self.assertTrue(d0.data_loaded)
 
-        d3 = CSV2DataFrame()
-        d3.load_from_CSV(fn=str(SAMPLE_DATA_DIR + '/ID1-pose-est-posorient-cov.csv'))
+        d1 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-gt.csv'), fmt=CSVSpatialFormatType.TUM)
+        self.assertTrue(d1.format == CSVSpatialFormatType.TUM)
+        self.assertTrue(d1.data_loaded)
+
+        d2 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-est-posorient-cov.csv'), fmt=CSVSpatialFormatType.PosOrientWithCov)
+        self.assertTrue(d2.format == CSVSpatialFormatType.PosOrientWithCov)
+        self.assertTrue(d2.data_loaded)
+        print('\nd2 keys: ' + ','.join(d2.data_frame.keys().values))
+
+        d3 = CSV2DataFrame(fn=str(SAMPLE_DATA_DIR + '/ID1-pose-est-posorient-cov.csv'))
         self.assertTrue(d3.data_loaded)
-        self.assertTrue(d3.format.type == CSVSpatialFormatType.PosOrientWithCov)
-        d3.save_to_CSV(fn=str(SAMPLE_DATA_DIR + '/results/ID1-pose-est-cov.COPY.csv'))
+        self.assertTrue(d3.format == CSVSpatialFormatType.PosOrientWithCovTyped)
+        print('\nd3 keys: ' + ','.join(d3.data_frame.keys().values))
+        d3.save_to_CSV(fn=str(SAMPLE_DATA_DIR + '/results/ID1-pose-est-posorient-cov.COPY.csv'))
 
     def test_formats(self):
         d4 = CSV2DataFrame()
         d4.load_from_CSV(fn=str(SAMPLE_DATA_DIR + '/ID1-pose-est-posorient-cov-type1-thetaR.csv'))
         self.assertTrue(d4.data_loaded)
-        self.assertTrue(d4.format.type == CSVSpatialFormatType.PosOrientWithCov)
-        self.assertTrue(d4.format.estimation_error_type == EstimationErrorType.type1)
-        self.assertTrue(d4.format.rotation_error_representation == ErrorRepresentationType.R_small_theta)
+        self.assertTrue(d4.format == CSVSpatialFormatType.PosOrientWithCovTyped)
 
         d5 = CSV2DataFrame()
         d5.load_from_CSV(fn=str(SAMPLE_DATA_DIR + '/ID1-pose-est-posorient-cov-type2-thetaq.csv'))
         self.assertTrue(d5.data_loaded)
-        self.assertTrue(d5.format.type == CSVSpatialFormatType.PosOrientWithCov)
-        self.assertTrue(d5.format.estimation_error_type == EstimationErrorType.type2)
-        self.assertTrue(d5.format.rotation_error_representation == ErrorRepresentationType.q_small_theta)
+        self.assertTrue(d5.format == CSVSpatialFormatType.PosOrientWithCovTyped)
 
     def test_wrong_format_type(self):
         d2 = CSV2DataFrame(str(SAMPLE_DATA_DIR + '/ID1-pose-est-posorient-cov.csv'), fmt=CSVSpatialFormatType.PosOrientCov)
         self.assertTrue(d2.data_loaded)
-        self.assertTrue(d2.format.type == CSVSpatialFormatType.PosOrientCov)
+        self.assertTrue(d2.format == CSVSpatialFormatType.PosOrientCov)
         d2.save_to_CSV(fn=str(SAMPLE_DATA_DIR + '/results/ID1-pose-cov-wrong.COPY.csv'))
 
 
