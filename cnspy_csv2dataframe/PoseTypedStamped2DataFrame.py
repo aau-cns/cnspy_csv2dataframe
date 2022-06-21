@@ -64,5 +64,5 @@ class PoseTypedStamped2DataFrame(CSV2DataFrame):
 
         df1 = TUMCSV2DataFrame.to_DataFrame(t_vec, p_vec, q_vec)
         df2 = pandas.DataFrame(
-            {'scale_vec': scale_vec.tolist(), 'est_err_type': est_err_type_vec.tolist()})
+            {'scale': scale_vec.tolist(), 'est_err_type': est_err_type_vec.tolist()})
         return pandas.concat([df1, df2], axis=1)
