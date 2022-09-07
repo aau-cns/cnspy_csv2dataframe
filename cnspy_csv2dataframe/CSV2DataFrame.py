@@ -37,10 +37,11 @@ class CSV2DataFrame:
         if fn is not None:
             self.load_from_CSV(fn=fn, fmt_type=fmt)
 
-    def subsample(self, step=None, num_max_points=None):
+    def subsample(self, step=None, num_max_points=None, verbose=False):
         if self.data_loaded:
             self.data_frame = CSV2DataFrame.subsample_DataFrame(self.data_frame, step=step,
-                                                                num_max_points=num_max_points)
+                                                                num_max_points=num_max_points,
+                                                                verbose=verbose)
         else:
             print("CSV2DataFrame: data was not loaded!")
 
@@ -110,17 +111,26 @@ class CSV2DataFrame:
 
         sparse_indices = np.arange(start=0, stop=num_elems, step=step)
 
-        if (num_max_points or step):
+        if num_max_points or step:
             if verbose:
                 print("CSV2DataFrame.subsample_DataFrame():")
                 print("* len: " + str(num_elems) + ", max_num_points: " + str(
                     num_max_points) + ", subsample by: " + str(step))
 
-            df_sub = df.loc[sparse_indices]
-            df_sub.reset_index(inplace=True)
-
-            return df_sub
-
+            return CSV2DataFrame.sample_DataFrame(df, sparse_indices)
         else:
             return df
 
+    @staticmethod
+    def sample_DataFrame(df, indices_arr):
+        num_elems = len(df.index)
+        assert (len(indices_arr) <= num_elems), "CSV2DataFrame.sample_DataFrame():\n\t index array must be smaller " \
+                                                    "equal the dataframe."
+        assert (max(indices_arr) <= num_elems), "CSV2DataFrame.sample_DataFrame():\n\t elements in the index array " \
+                                                    "must be smaller equal the dataframe."
+        assert (min(indices_arr) >= 0), "CSV2DataFrame.sample_DataFrame():\n\t elemts in the index array " \
+                                                    "must be greater equal zero."
+
+        df_sub = df.iloc[indices_arr]
+        df_sub.reset_index(inplace=True, drop=True)
+        return df_sub
