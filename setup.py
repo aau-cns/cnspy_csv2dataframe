@@ -15,7 +15,7 @@ with open(path.join(here, 'RELEASE'), encoding='utf-8') as f:
 
 setup(
     name='cnspy_csv2dataframe',
-    version=release,
+    version="0.2.1",
     author='Roland Jung',
     author_email='roland.jung@aau.at',    
     description='CSV to pandas.Dataframe converter',
