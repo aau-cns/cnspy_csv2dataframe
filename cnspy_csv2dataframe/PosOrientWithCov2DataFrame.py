@@ -36,29 +36,39 @@ class PosOrientWithCov2DataFrame(CSV2DataFrame):
         CSV2DataFrame.__init__(self, fn=fn, fmt=None)
 
     @staticmethod
+    def cov_from_DataFrame(data_frame):
+        assert (isinstance(data_frame, pandas.DataFrame))
+
+        if 'pxx' in data_frame.columns and 'qrr' in data_frame.columns:
+            if version_info[0] < 3:
+                cov_vec_p = data_frame.as_matrix(['pxx', 'pxy', 'pxz', 'pyy', 'pyz', 'pzz'])
+                cov_vec_q = data_frame.as_matrix(['qrr', 'qrp', 'qry', 'qpp', 'qpy', 'qyy'])
+            else:
+                # FIX(scm): for newer versions as_matrix is deprecated, using to_numpy instead
+                # from https://stackoverflow.com/questions/60164560/attributeerror-series-object-has-no-attribute-as-matrix-why-is-it-error
+                cov_vec_p = data_frame[['pxx', 'pxy', 'pxz', 'pyy', 'pyz', 'pzz']].to_numpy()
+                cov_vec_q = data_frame[['qrr', 'qrp', 'qry', 'qpp', 'qpy', 'qyy']].to_numpy()
+
+            l = len(data_frame.index)
+
+            P_vec_p = np.zeros((l, 3, 3))
+            P_vec_q = np.zeros((l, 3, 3))
+            # P_vec_p[:, ] = tri_vec_to_mat(cov_vec_p[:, ], n=3)
+
+            for i in range(0, l):
+                P_vec_p[i] = matrix_conversions.tri_vec_to_mat(cov_vec_p[i,], n=3)
+                P_vec_q[i] = matrix_conversions.tri_vec_to_mat(cov_vec_q[i,], n=3)
+
+            return P_vec_p, P_vec_q
+        else:
+            return None, None
+
+    @staticmethod
     def from_DataFrame(data_frame):
         assert (isinstance(data_frame, pandas.DataFrame))
 
         t_vec, p_vec, q_vec = TUMCSV2DataFrame.from_DataFrame(data_frame)
-
-        if version_info[0] < 3:
-            cov_vec_p = data_frame.as_matrix(['pxx', 'pxy', 'pxz', 'pyy', 'pyz', 'pzz'])
-            cov_vec_q = data_frame.as_matrix(['qrr', 'qrp', 'qry', 'qpp', 'qpy', 'qyy'])
-        else:
-            # FIX(scm): for newer versions as_matrix is deprecated, using to_numpy instead
-            # from https://stackoverflow.com/questions/60164560/attributeerror-series-object-has-no-attribute-as-matrix-why-is-it-error
-            cov_vec_p = data_frame[['pxx', 'pxy', 'pxz', 'pyy', 'pyz', 'pzz']].to_numpy()
-            cov_vec_q = data_frame[['qrr', 'qrp', 'qry', 'qpp', 'qpy', 'qyy']].to_numpy()
-
-        l = t_vec.shape[0]
-
-        P_vec_p = np.zeros((l, 3, 3))
-        P_vec_q = np.zeros((l, 3, 3))
-        # P_vec_p[:, ] = tri_vec_to_mat(cov_vec_p[:, ], n=3)
-
-        for i in range(0, l):
-            P_vec_p[i] = matrix_conversions.tri_vec_to_mat(cov_vec_p[i,], n=3)
-            P_vec_q[i] = matrix_conversions.tri_vec_to_mat(cov_vec_q[i,], n=3)
+        P_vec_p, P_vec_q = PosOrientWithCov2DataFrame.cov_from_DataFrame(data_frame)
 
         return t_vec, p_vec, q_vec, P_vec_p, P_vec_q
 
