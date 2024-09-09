@@ -32,14 +32,16 @@ class CSV2DataFrame:
     data_loaded = False
     fn = None
 
-    def __init__(self, fn=None, fmt=None):
+    def __init__(self, fn=None, fmt=None, df=None):
         # fmt allows manually overwrite expected format to be parsed into dataframe
         if fn is not None:
             self.load_from_CSV(fn=fn, fmt_type=fmt)
+        elif df is not None:
+            self.load_from_df(df=df, format=fmt)
 
     def subsample(self, step=None, num_max_points=None, verbose=False):
         if self.data_loaded:
-            self.data_frame = CSV2DataFrame.subsample_DataFrame(self.data_frame, step=step,
+            self.data_frame = CSV2DataFrame.subsample_DataFrame(df=self.data_frame, step=step,
                                                                 num_max_points=num_max_points,
                                                                 verbose=verbose)
         else:
@@ -62,6 +64,13 @@ class CSV2DataFrame:
         self.format = CSVSpatialFormatType.none
         return False
 
+    def load_from_df(self, df, format:CSVSpatialFormatType=CSVSpatialFormatType.none):
+        self.data_frame = df
+        self.fn = None
+        self.data_loaded = True
+        self.format = format
+        return True
+
     def save_to_CSV(self, fn, fmt=None):
         if self.data_loaded:
             CSV2DataFrame.save_CSV(data_frame=self.data_frame, filename=fn, fmt=fmt)
@@ -69,13 +78,13 @@ class CSV2DataFrame:
             print("CSV2DataFrame: data was not loaded!")
 
     @staticmethod
-    def identify_format(dataframe):
+    def identify_format(dataframe:pandas.DataFrame):
         if isinstance(dataframe, pandas.DataFrame):
             return CSVSpatialFormatType.header_to_format_type(','.join(dataframe.keys().values))
         return CSVSpatialFormatType.none
 
     @staticmethod
-    def load_CSV(filename, fmt=None):
+    def load_CSV(filename:str, fmt:CSVSpatialFormatType=CSVSpatialFormatType.none):
         if isinstance(fmt, CSVSpatialFormatType) and fmt is not CSVSpatialFormatType.none:
             data = pandas.read_csv(filename, sep='\s+|\,', comment='#', header=None,
                                    names=CSVSpatialFormatType.get_format(fmt),
@@ -87,7 +96,7 @@ class CSV2DataFrame:
         return data, fmt
 
     @staticmethod
-    def save_CSV(data_frame, filename, fmt=None, save_index=False):
+    def save_CSV(data_frame:pandas.DataFrame, filename:str, fmt=None, save_index=False):
         head = os.path.dirname(os.path.abspath(filename))
         if not os.path.exists(head):
             os.makedirs(head)
@@ -100,7 +109,7 @@ class CSV2DataFrame:
             data_frame.to_csv(filename, sep=',', index=save_index)
 
     @staticmethod
-    def subsample_DataFrame(df, step=None, num_max_points=None, verbose=False):
+    def subsample_DataFrame(df:pandas.DataFrame, step=None, num_max_points=None, verbose=False):
 
         num_elems = len(df.index)
 
@@ -122,7 +131,7 @@ class CSV2DataFrame:
             return df
 
     @staticmethod
-    def sample_DataFrame(df, indices_arr):
+    def sample_DataFrame(df:pandas.DataFrame, indices_arr):
         num_elems = len(df.index)
         assert (len(indices_arr) <= num_elems), "CSV2DataFrame.sample_DataFrame():\n\t index array must be smaller " \
                                                     "equal the dataframe."
